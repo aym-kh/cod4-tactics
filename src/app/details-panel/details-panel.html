@@ -1,0 +1,69 @@
+<aside
+  class="flex min-h-0 min-w-0 flex-col overflow-hidden border border-[#393a3c] bg-[linear-gradient(155deg,#202122,#171819_78%)] h-full"
+  id="details-panel" aria-labelledby="details-heading">
+
+  <header class="flex min-h-11 items-center justify-between border-b border-[#393a3c] px-4">
+    <h2 class="m-0 text-[0.92rem] font-bold" id="details-heading">Lineup breakdown</h2>
+    <div></div>
+  </header>
+
+  <div class="flex flex-col gap-8 p-3">
+
+    <!-- ***************************************** -->
+    <!-- ************ SELECTED PLAY ************** -->
+    <!-- ***************************************** -->
+    <div class="flex min-h-14.25 items-center gap-2">
+      <!-- TODO: Change the below span with custom icons (nade, strafe, jump) -->
+      <span
+        class="grid size-11 shrink-0 place-items-center rounded-full border-2 border-[#a35c5c] bg-[radial-gradient(circle,#703c3c_0_32%,transparent_35%)]"></span>
+      <div>
+        <p class="text-[#c0c2c4]">SELECTED ACTION NAME</p>
+        <p class="text-[#66686a] text-xs">Action position</p>
+      </div>
+    </div>
+
+    <!-- ***************************************** -->
+    <!-- ******** PLAY POSITION ****************** -->
+    <!-- ***************************************** -->
+    <section class="flex flex-col gap-2">
+      <h3 class="m-0 text-[0.72rem] font-semibold uppercase tracking-[0.035em] text-[#dedede]">Position</h3>
+      <img src="https://placehold.co/600x400" alt="position preview">
+    </section>
+
+    <!-- ***************************************** -->
+    <!-- ******** PLAY ALIGNMENT ***************** -->
+    <!-- ***************************************** -->
+    <section class="flex flex-col gap-2">
+      <h3 class="m-0 text-[0.72rem] font-semibold uppercase tracking-[0.035em] text-[#dedede]">Alignment</h3>
+      <img src="https://placehold.co/600x400" alt="position preview">
+    </section>
+
+    <!-- ***************************************** -->
+    <!-- ******** SELECTED PLAY META DATA ******** -->
+    <!-- ***************************************** -->
+    <ul class="flex flex-col gap-2 border-t border-[#3c3d3f] text-[#dedede]" aria-hidden="true">
+      <li>
+        <span>Team: </span>
+        <span>....</span>
+      </li>
+      <li>
+        <span>Stance: </span>
+        <span>....</span>
+      </li>
+      <li>
+        <span>Description: </span>
+        <span>....</span>
+      </li>
+    </ul>
+
+    <button class="flex items-center justify-center gap-2
+    py-2 border border-[#4a4b4d] bg-[#333436] rounded-lg cursor-pointer" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle-fill"
+        viewBox="0 0 16 16">
+        <path
+          d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814z" />
+      </svg>
+      <span class="text-xs uppercase">Play video clip</span>
+    </button>
+  </div>
+</aside>

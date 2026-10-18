@@ -1,0 +1,65 @@
+<main class="flex flex-col h-full gap-4 p-2" aria-label="Map workspace">
+  <div
+    class="grid grid-cols-[1.25fr_0.9fr_0.8fr] gap-4 border border-[#393a3c] bg-[linear-gradient(120deg,#222324,#191a1b)] px-3.5 py-2.5"
+    aria-label="Map filters">
+
+    <fieldset class="grid min-w-0 content-center gap-2 border-0 p-0">
+      <legend class="text-[0.8rem] font-semibold">Utility type</legend>
+      <div class="flex flex-wrap gap-x-3 gap-y-1">
+        <label class="inline-flex min-h-8 items-center gap-1.5 whitespace-nowrap text-[0.83rem] text-[#dfe0e0]">
+          <input class="size-4 accent-[#b8b8b8]" type="radio" name="utility-type" value="frag" checked>
+          Frag
+        </label>
+        <label class="inline-flex min-h-8 items-center gap-1.5 whitespace-nowrap text-[0.83rem] text-[#dfe0e0]">
+          <input class="size-4 accent-[#b8b8b8]" type="radio" name="utility-type" value="flash">
+          Flash
+        </label>
+        <label class="inline-flex min-h-8 items-center gap-1.5 whitespace-nowrap text-[0.83rem] text-[#dfe0e0]">
+          <input class="size-4 accent-[#b8b8b8]" type="radio" name="utility-type" value="smoke">
+          Smoke
+        </label>
+      </div>
+    </fieldset>
+
+    <fieldset class="grid min-w-0 content-center gap-2 border-0 p-0">
+      <legend class="text-[0.8rem] font-semibold">Team</legend>
+      <div class="flex flex-wrap gap-x-3 gap-y-1">
+        <label class="inline-flex min-h-8 items-center gap-1.5 whitespace-nowrap text-[0.83rem] text-[#dfe0e0]">
+          <input class="size-4 accent-[#b8b8b8]" type="radio" name="team" value="marines" checked>
+          Marines
+        </label>
+        <label class="inline-flex min-h-8 items-center gap-1.5 whitespace-nowrap text-[0.83rem] text-[#dfe0e0]">
+          <input class="size-4 accent-[#b8b8b8]" type="radio" name="team" value="opfor">
+          OpFor
+        </label>
+        <label class="inline-flex min-h-8 items-center gap-1.5 whitespace-nowrap text-[0.83rem] text-[#dfe0e0]">
+          <input class="size-4 accent-[#b8b8b8]" type="radio" name="team" value="all">
+          All
+        </label>
+      </div>
+    </fieldset>
+
+    <fieldset class="grid min-w-0 content-center gap-2 border-0 p-0">
+      <legend class="text-[0.8rem] font-semibold">Phase</legend>
+      <div class="flex flex-wrap gap-x-3 gap-y-1">
+        <label class="inline-flex min-h-8 items-center gap-1.5 whitespace-nowrap text-[0.83rem] text-[#dfe0e0]">
+          <input class="size-4 accent-[#b8b8b8]" type="radio" name="phase" value="early">
+          Early
+        </label>
+        <label class="inline-flex min-h-8 items-center gap-1.5 whitespace-nowrap text-[0.83rem] text-[#dfe0e0]">
+          <input class="size-4 accent-[#b8b8b8]" type="radio" name="phase" value="mid" checked>
+          Mid
+        </label>
+        <label class="inline-flex min-h-8 items-center gap-1.5 whitespace-nowrap text-[0.83rem] text-[#dfe0e0]">
+          <input class="size-4 accent-[#b8b8b8]" type="radio" name="phase" value="late">
+          Late
+        </label>
+      </div>
+    </fieldset>
+
+  </div>
+
+  <section class="map-canvas relative grid overflow-hidden border border-[#3b3c3e] bg-[#101112] h-full"
+    aria-label="Map canvas">
+  </section>
+</main>

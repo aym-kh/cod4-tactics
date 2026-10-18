@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+@theme {
+  --breakpoint-md: 47.5rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+app-root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+app-root {
+  display: block;
+}
+
+body {
+  min-width: 320px;
+  min-height: 320px;
+  overflow: hidden;
+  background: #101112;
+  color: #f4f4f4;
+  font-family:
+    Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #b7b8b9;
+  outline-offset: 2px;
+}
+
+@media (max-width: 47.5rem) {
+  .mobile-panel {
+    position: fixed;
+    inset-block: 0;
+    z-index: 50;
+    width: min(300px, calc(100vw - 48px));
+    overflow: auto;
+    visibility: hidden;
+    box-shadow: 0 12px 36px #0009;
+    transition:
+      transform 180ms ease,
+      visibility 180ms ease;
+  }
+
+  .mobile-panel--left {
+    left: 0;
+    transform: translateX(-105%);
+  }
+
+  .mobile-panel--right {
+    right: 0;
+    transform: translateX(105%);
+  }
+
+  .mobile-panel.is-open {
+    transform: translateX(0);
+    visibility: visible;
+  }
+}

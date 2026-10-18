@@ -1,0 +1,20 @@
+<aside
+  class="z-2 flex h-full min-h-0 min-w-0 flex-col gap-8 border-r border-[#303133] bg-[linear-gradient(145deg,#202122,#161718_68%)] px-4 py-5"
+  id="navigation-panel" aria-label="Primary navigation">
+  <a class="flex flex-col items-center justify-center gap-0.5 text-inherit no-underline cursor-pointer" routerLink="/"
+    aria-label="COD4 Tactics home">
+    <span class="text-[2.35rem] font-extrabold leading-none tracking-[-0.13em] text-[#f3f3f3]">C4T</span>
+    <span class="text-[0.72rem] font-bold tracking-[0.035em] text-[#a6a7a8]">COD4 TACTICS</span>
+  </a>
+
+  <nav class="grid content-start gap-4">
+    <h2 class="text-xs font-semibold uppercase tracking-[0.035em] text-[#96989a]" id="maps-heading">Maps</h2>
+
+    @for (item of mapsList; track $index) {
+    <button class="flex min-h-10 items-center rounded-lg px-3 text-left text-[#ededed]" [class.is-selected]="true"
+      type="button">
+      <span class="capitalize">{{item}}</span>
+    </button>
+    }
+  </nav>
+</aside>
