@@ -7,12 +7,12 @@
     <span class="text-[0.72rem] font-bold tracking-[0.035em] text-[#a6a7a8]">COD4 TACTICS</span>
   </a>
 
-  <nav class="grid content-start gap-4">
+  <nav class="grid content-start gap-1">
     <h2 class="text-xs font-semibold uppercase tracking-[0.035em] text-[#96989a]" id="maps-heading">Maps</h2>
 
     @for (item of mapsList; track $index) {
-    <button class="flex min-h-10 items-center rounded-lg px-3 text-left text-[#ededed]" [class.is-selected]="true"
-      type="button">
+    <button class="map-button" [class.is-selected]="item === selectedMap()"
+      [attr.aria-current]="item === selectedMap() ? 'true' : null" (click)="selectMap($any(item))" type="button">
       <span class="capitalize">{{item}}</span>
     </button>
     }
