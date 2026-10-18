@@ -5,6 +5,8 @@ An interactive, high-performance web tool built with Angular for **Call of Duty 
 ![License](https://img.shields.io/badge/license-MIT-black)
 ![Angular](https://img.shields.io/badge/Angular-v18+-red)
 
+<img src="./public/ui_preview.png" width=700>
+
 ## 📸 Overview
 
 Unlike modern FPS titles, COD4 never had an interactive web-based utility app. **COD4 Tactics** solves this by delivering an interactive canvas overlay where players can:
