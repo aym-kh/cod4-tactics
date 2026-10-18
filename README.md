@@ -43,4 +43,7 @@ pnpm start
 Navigate to http://localhost:4200/
 ```
 
+## 🙏 Acknowledgments & Credits
 
+- **[iwi2dds](https://github.com/mauserzjeh/iwi2dds)** by [@mauserzjeh](https://github.com/mauserzjeh) - Used for extracting and converting legacy Call of Duty `.iwi` map texture files into standard formats.
+- **Call of Duty 4: Modern Warfare (2007)** assets © Activision / Infinity Ward.
