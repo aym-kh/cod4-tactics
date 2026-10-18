@@ -1,4 +1,6 @@
-<main class="flex flex-col h-full gap-4 p-2" aria-label="Map workspace">
+<main class="flex h-full min-h-0 min-w-0 flex-col gap-3.5 bg-[#0d0d0d] p-3.5 max-md:gap-2.5 max-md:p-2.5"
+  aria-label="Map workspace">
+
   <div
     class="grid grid-cols-[1.25fr_0.9fr_0.8fr] gap-4 border border-[#393a3c] bg-[linear-gradient(120deg,#222324,#191a1b)] px-3.5 py-2.5"
     aria-label="Map filters">
@@ -59,7 +61,43 @@
 
   </div>
 
-  <section class="map-canvas relative grid overflow-hidden border border-[#3b3c3e] bg-[#101112] h-full"
-    aria-label="Map canvas">
+  <section
+    class="map-viewport relative flex min-h-0 min-w-0 flex-1 touch-none items-center justify-center overflow-hidden rounded-[9px] border border-[#303133] bg-[#0d0d0d]"
+    [class.is-dragging]="isDragging()" aria-label="Map canvas" (wheel)="onWheel($event)"
+    (pointerdown)="onPointerDown($event)" (pointermove)="onPointerMove($event)" (pointerup)="onPointerUp($event)"
+    (pointercancel)="onPointerUp($event)">
+    <div
+      class="map-frame relative aspect-square overflow-hidden border border-[#454648] bg-[#101112] will-change-transform transition-transform duration-150 ease-out"
+      [class.is-dragging]="isDragging()" [style.transform]="mapTransform()">
+      @if (!hasAssetError()) {
+      <img class="pointer-events-none absolute inset-0 size-full select-none object-cover" [src]="mapAsset()"
+        alt="Backlot tactical map" draggable="false" (error)="onAssetError()" (load)="onAssetLoad()">
+      <span
+        class="map-marker absolute z-10 size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[#f4f4f4] bg-[#c65b54] shadow-[0_0_12px_#c65b54]"
+        [style.left.%]="testMarker.x" [style.top.%]="testMarker.y" role="img" aria-label="Test map marker"></span>
+      } @else {
+      <div class="absolute inset-0 grid place-content-center gap-2 bg-[#111213] p-6 text-center" role="alert">
+        <span class="font-semibold text-[#f4f4f4]">Map asset could not be loaded</span>
+        <span class="break-all text-sm text-[#a6a7a8]">{{ mapAsset() }}</span>
+      </div>
+      }
+    </div>
+
+    <output
+      class="absolute bottom-3 left-3 rounded border border-[#393a3c] bg-[#171819e6] px-2 py-1 text-xs text-[#dfe0e0]"
+      aria-label="Map zoom">{{ zoomPercent() }}%</output>
+
+    <div class="absolute right-3 top-3 grid gap-2" (pointerdown)="$event.stopPropagation()">
+      <button
+        class="grid size-8 place-items-center rounded-md border border-[#414244] bg-[#1c1d1e] text-base text-[#d5d6d6] hover:bg-[#292a2b] disabled:cursor-not-allowed disabled:opacity-40"
+        type="button" aria-label="Zoom in" [disabled]="zoomLevel() >= 5" (click)="zoomIn()">+</button>
+      <button
+        class="grid size-8 place-items-center rounded-md border border-[#414244] bg-[#1c1d1e] text-base text-[#d5d6d6] hover:bg-[#292a2b] disabled:cursor-not-allowed disabled:opacity-40"
+        type="button" aria-label="Zoom out" [disabled]="zoomLevel() <= 1" (click)="zoomOut()">−</button>
+      <button
+        class="grid size-8 place-items-center rounded-md border border-[#414244] bg-[#1c1d1e] text-base text-[#d5d6d6] hover:bg-[#292a2b] disabled:cursor-not-allowed disabled:opacity-40"
+        type="button" aria-label="Reset map view"
+        [disabled]="zoomLevel() === 1 && panOffset().x === 0 && panOffset().y === 0" (click)="resetView()">↻</button>
+    </div>
   </section>
 </main>

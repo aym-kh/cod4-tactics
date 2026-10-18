@@ -1,9 +1,21 @@
-.map-canvas {
+.map-viewport {
+  container-type: size;
   background-image:
-    linear-gradient(#ffffff0d 1px, transparent 1px),
-    linear-gradient(90deg, #ffffff0d 1px, transparent 1px),
-    linear-gradient(#ffffff08 1px, transparent 1px),
-    linear-gradient(90deg, #ffffff08 1px, transparent 1px),
-    radial-gradient(ellipse at center, #232526 0%, #111213 72%);
-  background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px, auto;
+    linear-gradient(#ffffff0a 1px, transparent 1px),
+    linear-gradient(90deg, #ffffff0a 1px, transparent 1px),
+    radial-gradient(ellipse at center, #1b1d1e 0%, #0d0d0d 76%);
+  background-size: 32px 32px, 32px 32px, auto;
+}
+
+.map-viewport.is-dragging {
+  cursor: grabbing;
+}
+
+.map-frame {
+  width: min(100cqw, 100cqh);
+  transform-origin: center;
+}
+
+.map-frame.is-dragging {
+  transition: none;
 }
