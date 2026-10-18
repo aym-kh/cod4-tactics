@@ -71,7 +71,7 @@
       [class.is-dragging]="isDragging()" [style.transform]="mapTransform()">
       @if (!hasAssetError()) {
       <img class="pointer-events-none absolute inset-0 size-full select-none object-cover" [src]="mapAsset()"
-        alt="Backlot tactical map" draggable="false" (error)="onAssetError()" (load)="onAssetLoad()">
+        [alt]="mapLabel()" draggable="false" (error)="onAssetError()" (load)="onAssetLoad()">
       <span
         class="map-marker absolute z-10 size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[#f4f4f4] bg-[#c65b54] shadow-[0_0_12px_#c65b54]"
         [style.left.%]="testMarker.x" [style.top.%]="testMarker.y" role="img" aria-label="Test map marker"></span>

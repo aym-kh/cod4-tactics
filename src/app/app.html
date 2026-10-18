@@ -1,10 +1,10 @@
 <div
   class="grid h-full min-h-0 grid-cols-[220px_minmax(0,1fr)] overflow-hidden bg-[#101112] text-[#f4f4f4] max-[1000px]:grid-cols-[190px_minmax(0,1fr)] max-md:block">
-  <app-navigation-panel class="block min-h-0" />
+  <app-navigation-panel class="block min-h-0" [selectedMap]="selectedMap()" (mapSelected)="selectedMap.set($event)" />
 
   <div
     class="grid min-h-0 min-w-0 grid-cols-[minmax(0,1fr)_300px] max-[1000px]:grid-cols-[minmax(0,1fr)_270px] max-md:block max-md:h-full">
-    <app-map-workspace class="block h-full min-h-0 min-w-0" mapAsset="/maps/backlot.webp" />
+    <app-map-workspace class="block h-full min-h-0 min-w-0" [mapAsset]="mapAsset()" [mapName]="selectedMap()" />
     <app-details-panel class="block min-h-0" />
   </div>
 </div>

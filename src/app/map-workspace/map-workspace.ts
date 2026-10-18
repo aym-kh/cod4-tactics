@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input, output, signal, } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, input, signal, } from '@angular/core';
 import { PanOffset, DragState } from '../types';
 
 @Component({
@@ -10,11 +10,29 @@ import { PanOffset, DragState } from '../types';
 })
 export class MapWorkspace {
   readonly mapAsset = input('/maps/backlot.webp');
+  readonly mapName = input('Backlot');
 
   protected readonly zoomLevel = signal(1);
   protected readonly panOffset = signal<PanOffset>({ x: 0, y: 0 });
   protected readonly dragState = signal<DragState | null>(null);
   private readonly failedAsset = signal<string | null>(null);
+
+  constructor() {
+    // Switching maps invalidates the previous view; start each map at default zoom.
+    effect(() => {
+      if (this.mapAsset()) {
+        this.zoomLevel.set(1);
+        this.panOffset.set({ x: 0, y: 0 });
+      }
+    });
+  }
+
+  protected readonly mapLabel = computed(() => {
+    const name = this.mapName();
+    const label = name.charAt(0).toUpperCase() + name.slice(1);
+    return `${label} tactical map`;
+  });
+
 
   protected readonly isDragging = computed(() => this.dragState() !== null);
   protected readonly zoomPercent = computed(() => Math.round(this.zoomLevel() * 100));
