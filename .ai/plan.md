@@ -37,9 +37,9 @@ export interface LineupMarker {
 
 ### Phase 1: Core Shell & Navigation
 
-[ ] Angular App Initialization (Standalone components + Tailwind CSS).
-[ ] Responsive Layout: Top Bar (Map selector), Main Canvas Area, Sidebar (Filters & Info Panel).
-[ ] High-contrast, minimalist dark theme design tokens.
+[x] Angular App Initialization (Standalone components + Tailwind CSS).
+[x] Responsive Layout: Top Bar (Map selector), Main Canvas Area, Sidebar (Filters & Info Panel).
+[x] High-contrast, minimalist dark theme design tokens.
 
 
 ### Phase 2: Interactive Map Engine
