@@ -65,10 +65,22 @@ export class MapWorkspace {
       ),
   );
 
+  /** Start -> landing trajectories for the visible tactics that have both points. */
+  protected readonly trajectories = computed(() =>
+    this.markers().filter((marker) => marker.landing !== null),);
+
   /** Tactics present in the map's JSON, before filtering (for empty-state copy). */
   protected readonly totalTactics = computed(
     () => this.tacticsService.lineupsFor(this.mapName())().length,
   );
+
+  /** The draft's trajectory while the editor has both markers placed. */
+  protected readonly editorThrow = computed(() => {
+    if (!this.editor.open()) return null;
+    const start = this.editor.start();
+    const landing = this.editor.landing();
+    return start && landing ? { start, landing } : null;
+  });
 
   protected readonly isDragging = computed(() => this.dragState() !== null);
   protected readonly zoomPercent = computed(() => Math.round(this.zoomLevel() * 100));

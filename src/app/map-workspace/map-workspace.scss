@@ -42,8 +42,43 @@
     box-shadow: 0 0 12px #8fa3ad;
   }
 
+  // Landing points render as hollow dashed rings in the same utility hue.
+  &.is-landing {
+    background: #e2970b;
+    border-style: dashed;
+  }
+
   &:hover {
     scale: 1.25;
+  }
+}
+
+.map-trajectories {
+  pointer-events: none;
+
+  line {
+    stroke: rgba(244, 244, 244, 0.5);
+    stroke-width: 0.4;
+    stroke-dasharray: 1.8 1.5;
+    stroke-linecap: round;
+
+    &[data-utility='frag'] {
+      stroke: #c65b54;
+    }
+
+    &[data-utility='flash'] {
+      stroke: #e3b341;
+    }
+
+    &[data-utility='smoke'] {
+      stroke: #8fa3ad;
+    }
+  }
+
+  line.is-editor {
+    stroke: #b6b8b9;
+    stroke-width: 0.35;
+    stroke-dasharray: 1.1 1.3;
   }
 }
 

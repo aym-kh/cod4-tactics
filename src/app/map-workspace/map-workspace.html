@@ -61,10 +61,27 @@
       @if (!hasAssetError()) {
       <img class="pointer-events-none absolute inset-0 size-full select-none object-cover" [src]="mapAsset()"
         [alt]="mapLabel()" draggable="false" (error)="onAssetError()" (load)="onAssetLoad()">
+      <svg class="map-trajectories absolute inset-0 z-5 size-full" viewBox="0 0 100 100" preserveAspectRatio="none"
+        aria-hidden="true">
+        @for (trajectory of trajectories(); track trajectory.id) {
+        <line [attr.data-utility]="trajectory.utility" [attr.x1]="trajectory.start.x" [attr.y1]="trajectory.start.y"
+          [attr.x2]="trajectory.landing?.x" [attr.y2]="trajectory.landing?.y" />
+        }
+        @if (editorThrow(); as editorThrowLine) {
+        <line class="is-editor" [attr.x1]="editorThrowLine.start.x" [attr.y1]="editorThrowLine.start.y"
+          [attr.x2]="editorThrowLine.landing?.x" [attr.y2]="editorThrowLine.landing?.y" />
+        }
+      </svg>
       @for (marker of markers(); track marker.id) {
       <button class="map-marker absolute z-10 size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2"
         [attr.data-utility]="marker.utility" [style.left.%]="marker.start.x" [style.top.%]="marker.start.y"
         [attr.aria-label]="marker.name" type="button" (click)="onMarkerClick($event, marker)"></button>
+      @if (marker.landing; as landing) {
+      <button class="map-marker is-landing absolute z-10 size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2"
+        [attr.data-utility]="marker.utility" [style.left.%]="landing.x" [style.top.%]="landing.y"
+        [attr.aria-label]="marker.name + ' landing point'" type="button"
+        (click)="onMarkerClick($event, marker)"></button>
+      }
       }
       @if (editor.open()) {
       @if (editor.start(); as start) {

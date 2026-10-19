@@ -135,10 +135,19 @@ describe('MapWorkspace', () => {
     const markers = element.querySelectorAll<HTMLElement>('.map-marker');
 
     expect(image?.getAttribute('src')).toBe('/maps/backlot.webp');
-    expect(markers).toHaveLength(3);
+    // Three visible tactics; two of them have landing points.
+    expect(markers).toHaveLength(5);
+    expect(element.querySelectorAll<HTMLButtonElement>('.map-marker:not(.is-landing)')).toHaveLength(3);
+    expect(element.querySelectorAll<HTMLButtonElement>('.map-marker.is-landing')).toHaveLength(2);
     expect(markers[0].style.left).toBe('45.2%');
     expect(markers[0].style.top).toBe('62.8%');
     expect(markers[0].dataset['utility']).toBe('frag');
+    // Landing points sit right after their start, hollow and dashed.
+    expect(markers[1].classList.contains('is-landing')).toBe(true);
+    expect(markers[1].style.left).toBe('26.5%');
+    expect(markers[1].style.top).toBe('38.4%');
+    // One dashed trajectory per tactic with a landing point.
+    expect(element.querySelectorAll('.map-trajectories line')).toHaveLength(2);
 
     fixture.componentRef.setInput('mapAsset', '/maps/crash.webp');
     fixture.componentRef.setInput('mapName', 'crash');
@@ -147,8 +156,11 @@ describe('MapWorkspace', () => {
     const crashMarkers = element.querySelectorAll<HTMLElement>('.map-marker');
     expect(element.querySelector<HTMLImageElement>('.map-frame img')?.getAttribute('src'))
       .toBe('/maps/crash.webp');
+    // The crash tactic has no landing point: start only, no trajectory.
     expect(crashMarkers).toHaveLength(1);
     expect(crashMarkers[0].dataset['utility']).toBe('frag');
+    expect(crashMarkers[0].style.left).toBe('52.7%');
+    expect(element.querySelectorAll('.map-trajectories line')).toHaveLength(0);
   });
 
   it('shows every tactic by default, narrows with filters, and explains the empty state', async () => {
@@ -157,17 +169,18 @@ describe('MapWorkspace', () => {
     const status = () => element.querySelector('output[role="status"]') as HTMLElement | null;
 
     // All / All / All reveals everything the backlot JSON contains.
-    expect(element.querySelectorAll('.map-marker')).toHaveLength(3);
+    expect(element.querySelectorAll('.map-marker')).toHaveLength(5);
     expect(status()).toBeNull();
 
-    // Narowing to frag / marines / mid leaves only the A-site frag.
+    // Narowing to frag / marines / mid leaves only the A-site frag (with its landing).
     element.querySelectorAll<HTMLInputElement>('input[name="utility-type"]')[1]?.click();
     element.querySelectorAll<HTMLInputElement>('input[name="team"]')[1]?.click();
     element.querySelectorAll<HTMLInputElement>('input[name="phase"]')[2]?.click();
     fixture.detectChanges();
-    const narrowMarkers = element.querySelectorAll<HTMLElement>('.map-marker');
-    expect(narrowMarkers).toHaveLength(1);
-    expect(narrowMarkers[0].dataset['utility']).toBe('frag');
+    const narrowStarts = element.querySelectorAll<HTMLElement>('.map-marker:not(.is-landing)');
+    expect(narrowStarts).toHaveLength(1);
+    expect(narrowStarts[0].dataset['utility']).toBe('frag');
+    expect(element.querySelectorAll('.map-marker.is-landing')).toHaveLength(1);
 
     // Utility -> smoke reproduces the contributor trap: content exists, filters hide it.
     element.querySelectorAll<HTMLInputElement>('input[name="utility-type"]')[3]?.click();
@@ -181,9 +194,10 @@ describe('MapWorkspace', () => {
     element.querySelectorAll<HTMLInputElement>('input[name="team"]')[0]?.click();
     element.querySelectorAll<HTMLInputElement>('input[name="phase"]')[3]?.click();
     fixture.detectChanges();
-    const lateMarkers = element.querySelectorAll<HTMLElement>('.map-marker');
+    const lateMarkers = element.querySelectorAll<HTMLElement>('.map-marker:not(.is-landing)');
     expect(lateMarkers).toHaveLength(1);
     expect(lateMarkers[0].dataset['utility']).toBe('smoke');
+    expect(element.querySelectorAll('.map-marker.is-landing')).toHaveLength(1);
     expect(status()).toBeNull();
   });
 
