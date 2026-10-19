@@ -11,6 +11,14 @@ entries into a dated section automatically.
 
 ## [Unreleased]
 
+### Fixed
+
+- Deploy workflow now reads Node from `.nvmrc` (v24.21.0, matching local dev)
+  instead of the outdated `node-version: 20`, which made the Angular CLI abort
+  with "requires a minimum Node.js version"
+- Added an `engines` field to `package.json` so unsupported Node versions are
+  flagged at install time
+
 ## [0.1.0] - 2026-10-19
 
 ### Added
