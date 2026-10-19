@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal, } from '@angular/core';
-import { MatchPhase, StanceType, TeamSide, UtilityType } from '../types';
-import { TacticEditorService } from '../tactic-editor.service';
+import { MatchPhase, StanceType, TeamSide, UtilityType } from '../../types';
+import { TacticEditorService } from '../../services/tactic-editor.service';
 
 type CopyState = 'idle' | 'copied' | 'failed';
 

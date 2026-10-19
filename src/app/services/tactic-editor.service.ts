@@ -1,5 +1,5 @@
 import { Injectable, computed, signal } from '@angular/core';
-import { MapPoint, MatchPhase, PlacingTarget, StanceType, TacticDraft, TeamSide, UtilityType, } from './types';
+import { MapPoint, MatchPhase, PlacingTarget, StanceType, TacticDraft, TeamSide, UtilityType, } from '../types';
 
 /** Shared state for one tactic being authored; kept alive across reopen. */
 @Injectable({ providedIn: 'root' })

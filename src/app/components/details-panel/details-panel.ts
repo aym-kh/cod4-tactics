@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { Lineup, MapPoint } from '../types';
+import { Lineup, MapPoint } from '../../types';
 
 @Component({
   selector: 'app-details-panel',

@@ -2,7 +2,7 @@ import { Component, input, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 // Read from package.json so the sidebar never drifts from the real version.
 // TODO: placeholder profile URLs — replace with the project's real accounts.
-import { version } from '../../../package.json';
+import { version } from '../../../../package.json';
 
 @Component({
   selector: 'app-navigation-panel',

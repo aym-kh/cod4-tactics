@@ -1,5 +1,5 @@
 import { Injectable, Signal, signal, WritableSignal } from '@angular/core';
-import { Lineup, MapPoint, MatchPhase, StanceType, TeamSide, UtilityType } from './types';
+import { Lineup, MapPoint, MatchPhase, StanceType, TeamSide, UtilityType } from '../types';
 
 const UTILITY_TYPES = new Set<string>(['frag', 'flash', 'smoke']);
 const TEAM_SIDES = new Set<string>(['marines', 'opfor']);

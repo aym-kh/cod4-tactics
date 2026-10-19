@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input, output, signal, } from '@angular/core';
-import { DragState, Lineup, PanOffset, PhaseFilter, TeamFilter, UtilityFilter, } from '../types';
-import { TacticsService } from '../tactics.service';
-import { TacticEditorService } from '../tactic-editor.service';
+import { DragState, Lineup, PanOffset, PhaseFilter, TeamFilter, UtilityFilter, } from '../../types';
+import { TacticsService } from '../../services/tactics.service';
+import { TacticEditorService } from '../../services/tactic-editor.service';
 
 const PLACEMENT_THRESHOLD_PX = 6;
 

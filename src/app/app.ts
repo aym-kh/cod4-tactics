@@ -1,8 +1,8 @@
 import { Component, effect, signal } from '@angular/core';
-import { DetailsPanel } from './details-panel/details-panel';
-import { MapWorkspace } from './map-workspace/map-workspace';
-import { NavigationPanel } from './navigation-panel/navigation-panel';
-import { TacticEditor } from './tactic-editor/tactic-editor';
+import { DetailsPanel } from './components/details-panel/details-panel';
+import { MapWorkspace } from './components/map-workspace/map-workspace';
+import { NavigationPanel } from './components/navigation-panel/navigation-panel';
+import { TacticEditor } from './components/tactic-editor/tactic-editor';
 import { Lineup } from './types';
 
 const DEFAULT_MAP = 'backlot';
