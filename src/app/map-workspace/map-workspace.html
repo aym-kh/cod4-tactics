@@ -87,9 +87,22 @@
     </div>
 
     @if (!hasAssetError() && markers().length === 0) {
-    <output
-      class="pointer-events-none absolute left-1/2 top-3 -translate-x-1/2 rounded border border-[#393a3c] bg-[#171819e6] px-2.5 py-1 text-xs text-[#a6a7a8]"
-      aria-label="No lineups">No lineups for the selected filters</output>
+    <div class="pointer-events-none absolute inset-0 grid place-items-center p-6">
+      <output
+        class="grid max-w-72 place-content-center gap-1 rounded-lg border border-[#393a3c] bg-[#171819f2] px-5 py-4 text-center"
+        role="status">
+        @if (totalTactics() === 0) {
+        <span class="font-semibold text-[#e9eaea]">No tactics on this map yet</span>
+        <span class="text-xs leading-relaxed text-[#9a9c9e]">Add one with the “Add tactic” button below — the JSON you
+          export gets merged into the repo and shows up here.</span>
+        } @else {
+        <span class="font-semibold text-[#e9eaea]">{{totalTactics()}} tactic{{totalTactics() === 1 ? '' : 's'}}
+          exist{{totalTactics() === 1 ? 's' : ''}} on this map — none match the filters</span>
+        <span class="text-xs leading-relaxed text-[#9a9c9e]">Set utility, team and phase back to “All” to see
+          everything published for {{mapLabel()}}.</span>
+        }
+      </output>
+    </div>
     }
 
     <div class="absolute bottom-3 left-3 grid items-start justify-start gap-2" (pointerdown)="$event.stopPropagation()">

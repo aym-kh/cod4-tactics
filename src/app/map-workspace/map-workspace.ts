@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input, output, signal, } from '@angular/core';
-import { DragState, Lineup, MatchPhase, PanOffset, TeamFilter, UtilityType, } from '../types';
+import { DragState, Lineup, PanOffset, PhaseFilter, TeamFilter, UtilityFilter, } from '../types';
 import { TacticsService } from '../tactics.service';
 import { TacticEditorService } from '../tactic-editor.service';
 
@@ -20,13 +20,13 @@ export class MapWorkspace {
   readonly mapName = input('backlot');
   readonly lineupSelected = output<Lineup>();
 
-  protected readonly utilityOptions: UtilityType[] = ['frag', 'flash', 'smoke'];
-  protected readonly teamOptions: TeamFilter[] = ['marines', 'opfor', 'all'];
-  protected readonly phaseOptions: MatchPhase[] = ['early', 'mid', 'late'];
+  protected readonly utilityOptions: UtilityFilter[] = ['all', 'frag', 'flash', 'smoke'];
+  protected readonly teamOptions: TeamFilter[] = ['all', 'marines', 'opfor'];
+  protected readonly phaseOptions: PhaseFilter[] = ['all', 'early', 'mid', 'late'];
 
-  readonly utilityType = signal<UtilityType>('frag');
-  readonly teamFilter = signal<TeamFilter>('marines');
-  readonly phaseFilter = signal<MatchPhase>('mid');
+  readonly utilityType = signal<UtilityFilter>('all');
+  readonly teamFilter = signal<TeamFilter>('all');
+  readonly phaseFilter = signal<PhaseFilter>('all');
 
   protected readonly zoomLevel = signal(1);
   protected readonly panOffset = signal<PanOffset>({ x: 0, y: 0 });
@@ -59,10 +59,15 @@ export class MapWorkspace {
       .lineupsFor(this.mapName())()
       .filter(
         (lineup) =>
-          lineup.utility === this.utilityType() &&
-          lineup.phase === this.phaseFilter() &&
-          (this.teamFilter() === 'all' || lineup.team === this.teamFilter()),
+          (this.utilityType() === 'all' || lineup.utility === this.utilityType()) &&
+          (this.teamFilter() === 'all' || lineup.team === this.teamFilter()) &&
+          (this.phaseFilter() === 'all' || lineup.phase === this.phaseFilter()),
       ),
+  );
+
+  /** Tactics present in the map's JSON, before filtering (for empty-state copy). */
+  protected readonly totalTactics = computed(
+    () => this.tacticsService.lineupsFor(this.mapName())().length,
   );
 
   protected readonly isDragging = computed(() => this.dragState() !== null);

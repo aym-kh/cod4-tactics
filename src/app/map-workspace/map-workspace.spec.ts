@@ -113,20 +113,20 @@ describe('MapWorkspace', () => {
       'input[name="phase"]',
     );
 
-    expect(utilityOptions).toHaveLength(3);
+    expect(utilityOptions).toHaveLength(4);
     expect(teamOptions).toHaveLength(3);
-    expect(phaseOptions).toHaveLength(3);
+    expect(phaseOptions).toHaveLength(4);
     expect([...utilityOptions, ...teamOptions, ...phaseOptions].every((option) => !option.disabled)).toBe(true);
-    expect(element.querySelector<HTMLInputElement>('input[value="frag"]')?.checked).toBe(true);
-    expect(element.querySelector<HTMLInputElement>('input[value="marines"]')?.checked).toBe(true);
-    expect(element.querySelector<HTMLInputElement>('input[value="mid"]')?.checked).toBe(true);
+    expect(element.querySelector<HTMLInputElement>('input[value="all"][name="utility-type"]')?.checked).toBe(true);
+    expect(element.querySelector<HTMLInputElement>('input[value="all"][name="team"]')?.checked).toBe(true);
+    expect(element.querySelector<HTMLInputElement>('input[value="all"][name="phase"]')?.checked).toBe(true);
 
-    const smokeOption = element.querySelector<HTMLInputElement>('input[value="smoke"]');
+    const smokeOption = element.querySelectorAll<HTMLInputElement>('input[value="smoke"]')[0];
     smokeOption?.click();
     fixture.detectChanges();
     expect(smokeOption?.checked).toBe(true);
-    expect(element.querySelector<HTMLInputElement>('input[value="frag"]')?.checked).toBe(false);
-    expect(element.querySelector<HTMLInputElement>('input[value="marines"]')?.checked).toBe(true);
+    expect(element.querySelectorAll<HTMLInputElement>('input[name="utility-type"]')[0]?.checked).toBe(false);
+    expect(element.querySelector<HTMLInputElement>('input[value="all"][name="team"]')?.checked).toBe(true);
   });
 
   it('renders markers loaded from the map tactic JSON', async () => {
@@ -135,7 +135,7 @@ describe('MapWorkspace', () => {
     const markers = element.querySelectorAll<HTMLElement>('.map-marker');
 
     expect(image?.getAttribute('src')).toBe('/maps/backlot.webp');
-    expect(markers).toHaveLength(1);
+    expect(markers).toHaveLength(3);
     expect(markers[0].style.left).toBe('45.2%');
     expect(markers[0].style.top).toBe('62.8%');
     expect(markers[0].dataset['utility']).toBe('frag');
@@ -151,29 +151,54 @@ describe('MapWorkspace', () => {
     expect(crashMarkers[0].dataset['utility']).toBe('frag');
   });
 
-  it('narrows markers as filters change and shows an empty state', async () => {
+  it('shows every tactic by default, narrows with filters, and explains the empty state', async () => {
     const { fixture, element } = await createWorkspace();
 
-    const noLineups = () => element.querySelector('output[aria-label="No lineups"]');
+    const status = () => element.querySelector('output[role="status"]') as HTMLElement | null;
 
-    // Default (frag / marines / mid) has a lineup on backlot.
-    expect(element.querySelectorAll('.map-marker')).toHaveLength(1);
+    // All / All / All reveals everything the backlot JSON contains.
+    expect(element.querySelectorAll('.map-marker')).toHaveLength(3);
+    expect(status()).toBeNull();
 
-    // Frag + marines + mid has no smoke lineup, empty state shows.
-    element.querySelector<HTMLInputElement>('input[value="smoke"]')?.click();
+    // Narowing to frag / marines / mid leaves only the A-site frag.
+    element.querySelectorAll<HTMLInputElement>('input[name="utility-type"]')[1]?.click();
+    element.querySelectorAll<HTMLInputElement>('input[name="team"]')[1]?.click();
+    element.querySelectorAll<HTMLInputElement>('input[name="phase"]')[2]?.click();
+    fixture.detectChanges();
+    const narrowMarkers = element.querySelectorAll<HTMLElement>('.map-marker');
+    expect(narrowMarkers).toHaveLength(1);
+    expect(narrowMarkers[0].dataset['utility']).toBe('frag');
+
+    // Utility -> smoke reproduces the contributor trap: content exists, filters hide it.
+    element.querySelectorAll<HTMLInputElement>('input[name="utility-type"]')[3]?.click();
     fixture.detectChanges();
     expect(element.querySelectorAll('.map-marker')).toHaveLength(0);
-    expect(noLineups()?.textContent).toContain('No lineups');
+    expect(status()?.textContent).toContain('3 tactics exist');
+    expect(status()?.textContent).toContain('none match the filters');
+    expect(status()?.textContent).toContain('All');
 
-    // Loosening to 'all' teams and 'late' phase finds the river-road smoke.
-    element.querySelector<HTMLInputElement>('input[value="all"]')?.click();
-    fixture.detectChanges();
-    element.querySelector<HTMLInputElement>('input[value="late"]')?.click();
+    // Loosen to smoke / all / late and the river-road smoke comes back.
+    element.querySelectorAll<HTMLInputElement>('input[name="team"]')[0]?.click();
+    element.querySelectorAll<HTMLInputElement>('input[name="phase"]')[3]?.click();
     fixture.detectChanges();
     const lateMarkers = element.querySelectorAll<HTMLElement>('.map-marker');
     expect(lateMarkers).toHaveLength(1);
     expect(lateMarkers[0].dataset['utility']).toBe('smoke');
-    expect(noLineups()).toBeNull();
+    expect(status()).toBeNull();
+  });
+
+  it('explains when a map has no tactics at all', async () => {
+    const { fixture, element, tactics } = await createWorkspace();
+
+    // A map whose JSON is empty (or missing) gets the "not yet covered" copy.
+    fixture.componentRef.setInput('mapAsset', '/maps/strike.webp');
+    fixture.componentRef.setInput('mapName', 'strike');
+    await tactics.tacticsReady('strike');
+    fixture.detectChanges();
+
+    const status = element.querySelector('output[role="status"]');
+    expect(element.querySelectorAll('.map-marker')).toHaveLength(0);
+    expect(status?.textContent).toContain('No tactics on this map yet');
   });
 
   it('emits a selection when a marker is clicked', async () => {

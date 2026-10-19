@@ -13,10 +13,17 @@ export interface DragState {
 
 export type UtilityType = 'frag' | 'flash' | 'smoke';
 export type TeamSide = 'marines' | 'opfor';
-export type TeamFilter = TeamSide | 'all';
 export type MatchPhase = 'early' | 'mid' | 'late';
 export type StanceType = 'standing' | 'crouch' | 'walk' | 'jump';
 export type PlacingTarget = 'start' | 'landing';
+
+/**
+ * Viewer filter values. 'all' disables a dimension, so a freshly navigated
+ * map always shows everything its tactics JSON contains.
+ */
+export type UtilityFilter = UtilityType | 'all';
+export type TeamFilter = TeamSide | 'all';
+export type PhaseFilter = MatchPhase | 'all';
 
 /** Position on the map, in percentage of the map frame (0-100). */
 export interface MapPoint {
