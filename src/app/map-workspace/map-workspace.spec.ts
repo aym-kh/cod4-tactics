@@ -14,7 +14,7 @@ describe('MapWorkspace', () => {
   }
 
   it('renders enabled, independently selectable radio groups', async () => {
-    const { element } = await createWorkspace();
+    const { fixture, element } = await createWorkspace();
 
     const utilityOptions = element.querySelectorAll<HTMLInputElement>(
       'input[name="utility-type"]',
@@ -36,24 +36,70 @@ describe('MapWorkspace', () => {
 
     const smokeOption = element.querySelector<HTMLInputElement>('input[value="smoke"]');
     smokeOption?.click();
+    fixture.detectChanges();
     expect(smokeOption?.checked).toBe(true);
     expect(element.querySelector<HTMLInputElement>('input[value="frag"]')?.checked).toBe(false);
     expect(element.querySelector<HTMLInputElement>('input[value="marines"]')?.checked).toBe(true);
   });
 
-  it('renders the configured map asset and percentage-positioned test marker', async () => {
+  it('renders markers for the current map and default filters', async () => {
     const { fixture, element } = await createWorkspace();
     const image = element.querySelector<HTMLImageElement>('.map-frame img');
-    const marker = element.querySelector<HTMLElement>('.map-marker');
+    const markers = element.querySelectorAll<HTMLElement>('.map-marker');
 
     expect(image?.getAttribute('src')).toBe('/maps/backlot.webp');
-    expect(marker?.style.left).toBe('45.2%');
-    expect(marker?.style.top).toBe('62.8%');
+    expect(markers).toHaveLength(1);
+    expect(markers[0].style.left).toBe('45.2%');
+    expect(markers[0].style.top).toBe('62.8%');
+    expect(markers[0].dataset['utility']).toBe('frag');
 
     fixture.componentRef.setInput('mapAsset', '/maps/crash.webp');
+    fixture.componentRef.setInput('mapName', 'crash');
     fixture.detectChanges();
+    const crashMarkers = element.querySelectorAll<HTMLElement>('.map-marker');
     expect(element.querySelector<HTMLImageElement>('.map-frame img')?.getAttribute('src'))
       .toBe('/maps/crash.webp');
+    expect(crashMarkers).toHaveLength(1);
+    expect(crashMarkers[0].style.left).toBe('52.7%');
+  });
+
+  it('narrows markers as filters change and shows an empty state', async () => {
+    const { fixture, element } = await createWorkspace();
+
+    const noLineups = () => element.querySelector('output[aria-label="No lineups"]');
+
+    // Default (frag / marines / mid) has a lineup on backlot.
+    expect(element.querySelectorAll('.map-marker')).toHaveLength(1);
+
+    // Frag + marines + mid has no smoke lineup, empty state shows.
+    element.querySelector<HTMLInputElement>('input[value="smoke"]')?.click();
+    fixture.detectChanges();
+    expect(element.querySelectorAll('.map-marker')).toHaveLength(0);
+    expect(noLineups()?.textContent).toContain('No lineups');
+
+    // Loosening to 'all' teams and 'late' phase finds the river-road smoke.
+    element.querySelector<HTMLInputElement>('input[value="all"]')?.click();
+    fixture.detectChanges();
+    element.querySelector<HTMLInputElement>('input[value="late"]')?.click();
+    fixture.detectChanges();
+    const lateMarkers = element.querySelectorAll<HTMLElement>('.map-marker');
+    expect(lateMarkers).toHaveLength(1);
+    expect(lateMarkers[0].dataset['utility']).toBe('smoke');
+    expect(noLineups()).toBeNull();
+  });
+
+  it('emits a selection when a marker is clicked', async () => {
+    const { fixture, element } = await createWorkspace();
+    const component = fixture.componentInstance;
+
+    const selections: string[] = [];
+    component.lineupSelected.subscribe((lineup: { id: string }) => selections.push(lineup.id));
+
+    const marker = element.querySelector<HTMLButtonElement>('.map-marker');
+    marker?.click();
+    fixture.detectChanges();
+
+    expect(selections).toEqual(['backlot-f-01']);
   });
 
   it('clamps zoom and resets the transform', async () => {

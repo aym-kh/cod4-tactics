@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, effect, input, signal, } from '@angular/core';
-import { PanOffset, DragState } from '../types';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, output, signal, } from '@angular/core';
+import { DragState, Lineup, MatchPhase, PanOffset, TeamFilter, UtilityType, } from '../types';
+import { LineupsService } from '../lineups.service';
 
 @Component({
   selector: 'app-map-workspace',
@@ -9,8 +10,19 @@ import { PanOffset, DragState } from '../types';
   styleUrl: './map-workspace.scss',
 })
 export class MapWorkspace {
+  private readonly lineupsService = inject(LineupsService);
+
   readonly mapAsset = input('/maps/backlot.webp');
-  readonly mapName = input('Backlot');
+  readonly mapName = input('backlot');
+  readonly lineupSelected = output<Lineup>();
+
+  protected readonly utilityOptions: UtilityType[] = ['frag', 'flash', 'smoke'];
+  protected readonly teamOptions: TeamFilter[] = ['marines', 'opfor', 'all'];
+  protected readonly phaseOptions: MatchPhase[] = ['early', 'mid', 'late'];
+
+  readonly utilityType = signal<UtilityType>('frag');
+  readonly teamFilter = signal<TeamFilter>('marines');
+  readonly phaseFilter = signal<MatchPhase>('mid');
 
   protected readonly zoomLevel = signal(1);
   protected readonly panOffset = signal<PanOffset>({ x: 0, y: 0 });
@@ -33,6 +45,15 @@ export class MapWorkspace {
     return `${label} tactical map`;
   });
 
+  /** Marker engine: lineups on the current map, narrowed by the selected filters. */
+  protected readonly markers = computed(() =>
+    this.lineupsService.filterLineups({
+      map: this.mapName(),
+      utility: this.utilityType(),
+      team: this.teamFilter(),
+      phase: this.phaseFilter(),
+    }),
+  );
 
   protected readonly isDragging = computed(() => this.dragState() !== null);
   protected readonly zoomPercent = computed(() => Math.round(this.zoomLevel() * 100));
@@ -41,8 +62,6 @@ export class MapWorkspace {
     return `translate3d(${x}px, ${y}px, 0) scale(${this.zoomLevel()})`;
   });
   protected readonly hasAssetError = computed(() => this.failedAsset() === this.mapAsset());
-
-  protected readonly testMarker = { x: 45.2, y: 62.8 };
 
   protected zoomIn(): void {
     this.setZoom(this.zoomLevel() + 0.25);

@@ -8,54 +8,43 @@
     <fieldset class="grid min-w-0 content-center gap-2 border-0 p-0">
       <legend class="text-[0.8rem] font-semibold">Utility type</legend>
       <div class="flex flex-wrap gap-x-3 gap-y-1">
+        @for (option of utilityOptions; track option) {
         <label class="inline-flex min-h-8 items-center gap-1.5 whitespace-nowrap text-[0.83rem] text-[#dfe0e0]">
-          <input class="size-4 accent-[#b8b8b8]" type="radio" name="utility-type" value="frag" checked>
-          Frag
+          <input class="size-4 accent-[#b8b8b8]" type="radio" name="utility-type" [value]="option"
+            [checked]="utilityType() === option" (change)="utilityType.set(option)">
+          <span class="capitalize">{{option}}</span>
         </label>
-        <label class="inline-flex min-h-8 items-center gap-1.5 whitespace-nowrap text-[0.83rem] text-[#dfe0e0]">
-          <input class="size-4 accent-[#b8b8b8]" type="radio" name="utility-type" value="flash">
-          Flash
-        </label>
-        <label class="inline-flex min-h-8 items-center gap-1.5 whitespace-nowrap text-[0.83rem] text-[#dfe0e0]">
-          <input class="size-4 accent-[#b8b8b8]" type="radio" name="utility-type" value="smoke">
-          Smoke
-        </label>
+        }
       </div>
     </fieldset>
 
     <fieldset class="grid min-w-0 content-center gap-2 border-0 p-0">
       <legend class="text-[0.8rem] font-semibold">Team</legend>
       <div class="flex flex-wrap gap-x-3 gap-y-1">
+        @for (option of teamOptions; track option) {
         <label class="inline-flex min-h-8 items-center gap-1.5 whitespace-nowrap text-[0.83rem] text-[#dfe0e0]">
-          <input class="size-4 accent-[#b8b8b8]" type="radio" name="team" value="marines" checked>
-          Marines
+          <input class="size-4 accent-[#b8b8b8]" type="radio" name="team" [value]="option"
+            [checked]="teamFilter() === option" (change)="teamFilter.set(option)">
+          @if (option === 'opfor') {
+          <span>OpFor</span>
+          } @else {
+          <span class="capitalize">{{option}}</span>
+          }
         </label>
-        <label class="inline-flex min-h-8 items-center gap-1.5 whitespace-nowrap text-[0.83rem] text-[#dfe0e0]">
-          <input class="size-4 accent-[#b8b8b8]" type="radio" name="team" value="opfor">
-          OpFor
-        </label>
-        <label class="inline-flex min-h-8 items-center gap-1.5 whitespace-nowrap text-[0.83rem] text-[#dfe0e0]">
-          <input class="size-4 accent-[#b8b8b8]" type="radio" name="team" value="all">
-          All
-        </label>
+        }
       </div>
     </fieldset>
 
     <fieldset class="grid min-w-0 content-center gap-2 border-0 p-0">
       <legend class="text-[0.8rem] font-semibold">Phase</legend>
       <div class="flex flex-wrap gap-x-3 gap-y-1">
+        @for (option of phaseOptions; track option) {
         <label class="inline-flex min-h-8 items-center gap-1.5 whitespace-nowrap text-[0.83rem] text-[#dfe0e0]">
-          <input class="size-4 accent-[#b8b8b8]" type="radio" name="phase" value="early">
-          Early
+          <input class="size-4 accent-[#b8b8b8]" type="radio" name="phase" [value]="option"
+            [checked]="phaseFilter() === option" (change)="phaseFilter.set(option)">
+          <span class="capitalize">{{option}}</span>
         </label>
-        <label class="inline-flex min-h-8 items-center gap-1.5 whitespace-nowrap text-[0.83rem] text-[#dfe0e0]">
-          <input class="size-4 accent-[#b8b8b8]" type="radio" name="phase" value="mid" checked>
-          Mid
-        </label>
-        <label class="inline-flex min-h-8 items-center gap-1.5 whitespace-nowrap text-[0.83rem] text-[#dfe0e0]">
-          <input class="size-4 accent-[#b8b8b8]" type="radio" name="phase" value="late">
-          Late
-        </label>
+        }
       </div>
     </fieldset>
 
@@ -72,9 +61,12 @@
       @if (!hasAssetError()) {
       <img class="pointer-events-none absolute inset-0 size-full select-none object-cover" [src]="mapAsset()"
         [alt]="mapLabel()" draggable="false" (error)="onAssetError()" (load)="onAssetLoad()">
-      <span
-        class="map-marker absolute z-10 size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[#f4f4f4] bg-[#c65b54] shadow-[0_0_12px_#c65b54]"
-        [style.left.%]="testMarker.x" [style.top.%]="testMarker.y" role="img" aria-label="Test map marker"></span>
+      @for (marker of markers(); track marker.id) {
+      <button
+        class="map-marker absolute z-10 size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2"
+        [attr.data-utility]="marker.utility" [style.left.%]="marker.position.x" [style.top.%]="marker.position.y"
+        [attr.aria-label]="marker.name" type="button" (click)="lineupSelected.emit(marker)"></button>
+      }
       } @else {
       <div class="absolute inset-0 grid place-content-center gap-2 bg-[#111213] p-6 text-center" role="alert">
         <span class="font-semibold text-[#f4f4f4]">Map asset could not be loaded</span>
@@ -82,6 +74,12 @@
       </div>
       }
     </div>
+
+    @if (!hasAssetError() && markers().length === 0) {
+    <output
+      class="pointer-events-none absolute left-1/2 top-3 -translate-x-1/2 rounded border border-[#393a3c] bg-[#171819e6] px-2.5 py-1 text-xs text-[#a6a7a8]"
+      aria-label="No lineups">No lineups for the selected filters</output>
+    }
 
     <output
       class="absolute bottom-3 left-3 rounded border border-[#393a3c] bg-[#171819e6] px-2 py-1 text-xs text-[#dfe0e0]"

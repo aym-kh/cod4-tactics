@@ -19,3 +19,30 @@
 .map-frame.is-dragging {
   transition: none;
 }
+
+.map-marker {
+  border-color: #f4f4f4;
+  outline-offset: 2px;
+  cursor: pointer;
+
+  &[data-utility='frag'] {
+    background: #c65b54;
+    box-shadow: 0 0 12px #c65b54;
+  }
+
+  &[data-utility='flash'] {
+    background: #e3b341;
+    border-color: #f7f1e3;
+    box-shadow: 0 0 12px #e3b341;
+  }
+
+  &[data-utility='smoke'] {
+    background: #8fa3ad;
+    border-color: #eef2f4;
+    box-shadow: 0 0 12px #8fa3ad;
+  }
+
+  &:hover {
+    scale: 1.25;
+  }
+}
