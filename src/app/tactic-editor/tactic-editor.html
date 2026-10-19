@@ -1,0 +1,156 @@
+<aside id="tactic-editor" class="tactic-editor" [class.is-open]="editor.open()"
+  aria-label="Add tactic editor">
+
+  <header class="flex min-h-11 shrink-0 items-center justify-between border-b border-[#393a3c] px-4">
+    <h2 class="m-0 text-[0.92rem] font-bold">Add tactic</h2>
+    <button
+      class="grid size-7 place-items-center rounded-md border border-[#414244] bg-[#1c1d1e] text-base text-[#d5d6d6] hover:bg-[#292a2b]"
+      type="button" aria-label="Close editor" (click)="editor.setOpen(false)">×</button>
+  </header>
+
+  <div class="editor-body flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto px-4 py-4">
+
+    <!-- ***************************************** -->
+    <!-- ************ TACTIC INFO ************** -->
+    <!-- ***************************************** -->
+    <section class="flex flex-col gap-2">
+      <label class="lbl" for="tactic-name">Tactic name</label>
+      <input class="field-input" id="tactic-name" type="text" placeholder="e.g. A-site frag from short"
+        aria-label="Tactic name" [value]="editor.name()" (input)="editor.name.set($any($event.target).value)">
+    </section>
+
+    <section class="flex flex-col gap-2">
+      <span class="lbl">Utility</span>
+      <div class="segmented" role="group" aria-label="Utility type">
+        @for (option of utilityOptions; track option) {
+        <button class="segment capitalize" type="button"
+          [class.is-active]="editor.utilityType() === option" (click)="editor.utilityType.set(option)">
+          {{option}}
+        </button>
+        }
+      </div>
+    </section>
+
+    <section class="flex flex-col gap-2">
+      <span class="lbl">Team</span>
+      <div class="segmented" role="group" aria-label="Team">
+        @for (option of teamOptions; track option) {
+        <button class="segment" type="button" [class.is-active]="editor.teamSide() === option"
+          (click)="editor.teamSide.set(option)">
+          @if (option === 'opfor') {
+          <span>OpFor</span>
+          } @else {
+          <span class="capitalize">{{option}}</span>
+          }
+        </button>
+        }
+      </div>
+    </section>
+
+    <section class="flex flex-col gap-2">
+      <span class="lbl">Phase</span>
+      <div class="segmented" role="group" aria-label="Phase">
+        @for (option of phaseOptions; track option) {
+        <button class="segment capitalize" type="button"
+          [class.is-active]="editor.phase() === option" (click)="editor.phase.set(option)">
+          {{option}}
+        </button>
+        }
+      </div>
+    </section>
+
+    <section class="flex flex-col gap-2">
+      <label class="lbl" for="tactic-stance">Stance</label>
+      <select class="field-input" id="tactic-stance" aria-label="Stance"
+        [value]="editor.stance() ?? ''" (change)="editor.stance.set($any($event.target).value || null)">
+        @for (option of stanceOptions; track option.value) {
+        <option [value]="option.value">{{option.label}}</option>
+        }
+      </select>
+    </section>
+
+    <section class="flex flex-col gap-2">
+      <label class="lbl" for="tactic-description">Description</label>
+      <textarea class="field-input min-h-20 resize-y" id="tactic-description" rows="3"
+        placeholder="Position details, timing, where to look…" aria-label="Tactic description"
+        [value]="editor.description()"
+        (input)="editor.description.set($any($event.target).value)"></textarea>
+    </section>
+
+    <section class="flex flex-col gap-2">
+      <label class="lbl" for="tactic-video">Video clip URL <em class="text-xs not-italic text-[#6b6d6f]">(optional)</em></label>
+      <input class="field-input" id="tactic-video" type="url" placeholder="https://…" aria-label="Video clip URL"
+        [value]="editor.videoUrl()" (input)="editor.videoUrl.set($any($event.target).value)">
+    </section>
+
+    <!-- ***************************************** -->
+    <!-- *********** MARKER PLACEMENT ************ -->
+    <!-- ***************************************** -->
+    <section class="flex flex-col gap-2">
+      <span class="lbl">Markers</span>
+      <div class="segmented" role="group" aria-label="Placing target">
+        @for (option of placingOptions; track option.key) {
+        <button class="segment" type="button"
+          [class.is-active]="editor.placingTarget() === option.key"
+          (click)="editor.placingTarget.set(option.key)" [disabled]="!editor.open()">
+          {{option.label}}
+        </button>
+        }
+      </div>
+      <ul class="flex flex-col gap-1.5 text-[0.82rem] text-[#b9bbbc]" aria-label="Placed markers">
+        <li class="flex items-center justify-between gap-2">
+          <span class="flex items-center gap-2">
+            <span class="size-2.5 rounded-full border border-[#ecfffa] bg-[#3ecf9e]" aria-hidden="true"></span>
+            {{pointLabel(editor.start())}}
+          </span>
+          <button class="editor-mini-btn" type="button" [disabled]="!editor.start()"
+            aria-label="Clear start marker" (click)="editor.start.set(null)">Clear</button>
+        </li>
+        <li class="flex items-center justify-between gap-2">
+          <span class="flex items-center gap-2">
+            <span class="size-2.5 rounded-full border border-dashed border-[#fff3e6] bg-[#e08b3e]" aria-hidden="true"></span>
+            {{pointLabel(editor.landing())}}
+          </span>
+          <button class="editor-mini-btn" type="button" [disabled]="!editor.landing()"
+            aria-label="Clear landing marker" (click)="editor.landing.set(null)">Clear</button>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ***************************************** -->
+    <!-- ************** JSON EXPORT ************** -->
+    <!-- ***************************************** -->
+    <section class="flex flex-col gap-2 border-t border-[#3c3d3f] pt-4">
+      <span class="lbl">JSON</span>
+      <details class="editor-preview">
+        <summary>Preview output</summary>
+        <pre class="overflow-x-auto bg-[#101112] p-2 text-[0.72rem] leading-relaxed text-[#c9cbcc]">{{preview()}}</pre>
+      </details>
+      <p class="m-0 text-xs leading-relaxed text-[#8b8d8f]">
+        Paste the output into the
+        <code class="rounded bg-[#101112] px-1 py-0.5 text-[0.72rem]">tactics</code> array of
+        <code class="rounded bg-[#101112] px-1 py-0.5 text-[0.72rem]">public/tactics/{{mapName()}}_tactics.json</code>
+        and open a pull request on GitHub.
+      </p>
+    </section>
+  </div>
+
+  <footer class="grid shrink-0 grid-cols-2 gap-2 border-t border-[#393a3c] px-4 py-3">
+    <button
+      class="flex items-center justify-center gap-2 rounded-lg border border-[#4a4b4d] bg-[#333436] px-2 py-2 text-xs font-semibold uppercase text-[#ececec] hover:bg-[#3b3c3e] disabled:cursor-not-allowed disabled:opacity-40"
+      type="button" [disabled]="!editor.isValid()" aria-label="Copy tactic JSON" (click)="copyJson()">
+      @if (copyState() === 'copied') {
+      <span>Copied ✓</span>
+      } @else if (copyState() === 'failed') {
+      <span>Copy failed</span>
+      } @else {
+      <span>Copy JSON</span>
+      }
+    </button>
+    <button
+      class="flex items-center justify-center gap-2 rounded-lg border border-[#5a6069] bg-[#4a5462] px-2 py-2 text-xs font-semibold uppercase text-[#ffffff] hover:bg-[#576274] disabled:cursor-not-allowed disabled:opacity-40"
+      type="button" [disabled]="!editor.isValid()" aria-label="Download tactic JSON" (click)="downloadJson()">
+      Download JSON
+    </button>
+  </footer>
+</aside>

@@ -1,16 +1,103 @@
 import { TestBed } from '@angular/core/testing';
 import { MapWorkspace } from './map-workspace';
+import { TacticEditorService } from '../tactic-editor.service';
+import { TacticsService } from '../tactics.service';
+
+/** Minimal per-map tactic file fixtures, matching public/tactics/*.json. */
+const FIXTURE_TACTICS: Record<string, unknown> = {
+  backlot: {
+    map: 'backlot',
+    tactics: [
+      {
+        id: 'backlot-f-01',
+        name: 'A-site frag from short',
+        utility: 'frag',
+        team: 'marines',
+        phase: 'mid',
+        stance: 'standing',
+        description: '',
+        videoUrl: null,
+        start: { x: 45.2, y: 62.8 },
+        landing: { x: 26.5, y: 38.4 },
+      },
+      {
+        id: 'backlot-l-01',
+        name: 'B-bomb flash over pillar',
+        utility: 'flash',
+        team: 'opfor',
+        phase: 'early',
+        stance: 'crouch',
+        description: '',
+        videoUrl: null,
+        start: { x: 31.4, y: 38 },
+        landing: null,
+      },
+      {
+        id: 'backlot-s-01',
+        name: 'River-road smoke for A cross',
+        utility: 'smoke',
+        team: 'marines',
+        phase: 'late',
+        stance: 'standing',
+        description: '',
+        videoUrl: null,
+        start: { x: 58.5, y: 70.4 },
+        landing: { x: 35.9, y: 29.1 },
+      },
+    ],
+  },
+  crash: {
+    map: 'crash',
+    tactics: [
+      {
+        id: 'crash-f-01',
+        name: 'Sniper-spot frag from rubble',
+        utility: 'frag',
+        team: 'marines',
+        phase: 'mid',
+        stance: 'walk',
+        description: '',
+        videoUrl: null,
+        start: { x: 52.7, y: 44.3 },
+        landing: null,
+      },
+    ],
+  },
+};
+
+function stubTacticsFetch(): void {
+  vi.spyOn(window, 'fetch').mockImplementation(((input: RequestInfo | URL) => {
+    const match = String(input).match(/\/tactics\/([a-z]+)_tactics\.json/);
+    const map = match?.[1] ?? '';
+    return Promise.resolve({
+      ok: true,
+      json: async () => FIXTURE_TACTICS[map] ?? { map, tactics: [] },
+    } as Response);
+  }) as typeof fetch);
+}
 
 describe('MapWorkspace', () => {
+  beforeEach(() => {
+    stubTacticsFetch();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   async function createWorkspace() {
     await TestBed.configureTestingModule({
       imports: [MapWorkspace],
     }).compileComponents();
 
+    // Ensure the default map's tactic JSON finished loading before rendering.
+    await TestBed.inject(TacticsService).tacticsReady('backlot');
+
     const fixture = TestBed.createComponent(MapWorkspace);
     fixture.detectChanges();
     await fixture.whenStable();
-    return { fixture, element: fixture.nativeElement as HTMLElement };
+    fixture.detectChanges();
+    return { fixture, element: fixture.nativeElement as HTMLElement, tactics: TestBed.inject(TacticsService)! };
   }
 
   it('renders enabled, independently selectable radio groups', async () => {
@@ -42,8 +129,8 @@ describe('MapWorkspace', () => {
     expect(element.querySelector<HTMLInputElement>('input[value="marines"]')?.checked).toBe(true);
   });
 
-  it('renders markers for the current map and default filters', async () => {
-    const { fixture, element } = await createWorkspace();
+  it('renders markers loaded from the map tactic JSON', async () => {
+    const { fixture, element, tactics } = await createWorkspace();
     const image = element.querySelector<HTMLImageElement>('.map-frame img');
     const markers = element.querySelectorAll<HTMLElement>('.map-marker');
 
@@ -55,12 +142,13 @@ describe('MapWorkspace', () => {
 
     fixture.componentRef.setInput('mapAsset', '/maps/crash.webp');
     fixture.componentRef.setInput('mapName', 'crash');
+    await tactics.tacticsReady('crash');
     fixture.detectChanges();
     const crashMarkers = element.querySelectorAll<HTMLElement>('.map-marker');
     expect(element.querySelector<HTMLImageElement>('.map-frame img')?.getAttribute('src'))
       .toBe('/maps/crash.webp');
     expect(crashMarkers).toHaveLength(1);
-    expect(crashMarkers[0].style.left).toBe('52.7%');
+    expect(crashMarkers[0].dataset['utility']).toBe('frag');
   });
 
   it('narrows markers as filters change and shows an empty state', async () => {
@@ -92,14 +180,76 @@ describe('MapWorkspace', () => {
     const { fixture, element } = await createWorkspace();
     const component = fixture.componentInstance;
 
-    const selections: string[] = [];
-    component.lineupSelected.subscribe((lineup: { id: string }) => selections.push(lineup.id));
+    const selections: { id: string }[] = [];
+    component.lineupSelected.subscribe((lineup: { id: string }) => selections.push(lineup));
 
     const marker = element.querySelector<HTMLButtonElement>('.map-marker');
     marker?.click();
     fixture.detectChanges();
 
-    expect(selections).toEqual(['backlot-f-01']);
+    expect(selections.map((selection) => selection.id)).toEqual(['backlot-f-01']);
+  });
+
+  it('places editor markers on map clicks while the editor is open', async () => {
+    const { fixture, element } = await createWorkspace();
+    const editor = TestBed.inject(TacticEditorService);
+    const frame = element.querySelector<HTMLElement>('.map-frame')!;
+
+    // Placement needs a measurable frame rect.
+    vi.spyOn(frame, 'getBoundingClientRect').mockReturnValue({
+      left: 10, top: 10, width: 100, height: 100, right: 110, bottom: 110,
+      x: 10, y: 10, toJSON: () => frame,
+    } as DOMRect);
+
+    // Editor closed: clicks are inert.
+    frame.dispatchEvent(new MouseEvent('click', { clientX: 20, clientY: 30 }));
+    expect(editor.start()).toBeNull();
+
+    editor.setOpen(true);
+    fixture.detectChanges();
+
+    // Click: places the start ghost (10% / 20%) and auto-advances to landing.
+    frame.dispatchEvent(new PointerEvent('pointerdown', { clientX: 20, clientY: 30, bubbles: true }));
+    frame.dispatchEvent(new MouseEvent('click', { clientX: 20, clientY: 30, bubbles: true }));
+    fixture.detectChanges();
+    expect(editor.start()).toEqual({ x: 10, y: 20 });
+    expect(editor.placingTarget()).toBe('landing');
+
+    // A rubber-band movement beyond the threshold is treated as a pan, not a click.
+    frame.dispatchEvent(new PointerEvent('pointerdown', { clientX: 20, clientY: 30, bubbles: true }));
+    frame.dispatchEvent(new MouseEvent('click', { clientX: 90, clientY: 80, bubbles: true }));
+    expect(editor.landing()).toBeNull();
+
+    // Second clean click: the landing ghost lands at (50% / 10%).
+    frame.dispatchEvent(new PointerEvent('pointerdown', { clientX: 60, clientY: 20, bubbles: true }));
+    frame.dispatchEvent(new MouseEvent('click', { clientX: 60, clientY: 20, bubbles: true }));
+    fixture.detectChanges();
+    expect(editor.landing()).toEqual({ x: 50, y: 10 });
+    expect(element.querySelectorAll('.map-ghost')).toHaveLength(2);
+  });
+
+  it('clears pending editor markers when the map changes', async () => {
+    const { fixture, element } = await createWorkspace();
+    const editor = TestBed.inject(TacticEditorService);
+    const frame = element.querySelector<HTMLElement>('.map-frame')!;
+
+    vi.spyOn(frame, 'getBoundingClientRect').mockReturnValue({
+      left: 0, top: 0, width: 100, height: 100, right: 100, bottom: 100,
+      x: 0, y: 0, toJSON: () => frame,
+    } as DOMRect);
+
+    editor.setOpen(true);
+    fixture.detectChanges();
+    frame.dispatchEvent(new PointerEvent('pointerdown', { clientX: 30, clientY: 40, bubbles: true }));
+    frame.dispatchEvent(new MouseEvent('click', { clientX: 30, clientY: 40, bubbles: true }));
+    fixture.detectChanges();
+    expect(editor.start()).not.toBeNull();
+
+    fixture.componentRef.setInput('mapName', 'crash');
+    fixture.detectChanges();
+    expect(editor.start()).toBeNull();
+    expect(editor.landing()).toBeNull();
+    expect(editor.placingTarget()).toBe('start');
   });
 
   it('clamps zoom and resets the transform', async () => {

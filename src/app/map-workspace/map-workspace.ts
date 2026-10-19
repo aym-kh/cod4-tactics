@@ -1,6 +1,9 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input, output, signal, } from '@angular/core';
 import { DragState, Lineup, MatchPhase, PanOffset, TeamFilter, UtilityType, } from '../types';
-import { LineupsService } from '../lineups.service';
+import { TacticsService } from '../tactics.service';
+import { TacticEditorService } from '../tactic-editor.service';
+
+const PLACEMENT_THRESHOLD_PX = 6;
 
 @Component({
   selector: 'app-map-workspace',
@@ -10,7 +13,8 @@ import { LineupsService } from '../lineups.service';
   styleUrl: './map-workspace.scss',
 })
 export class MapWorkspace {
-  private readonly lineupsService = inject(LineupsService);
+  private readonly tacticsService = inject(TacticsService);
+  protected readonly editor = inject(TacticEditorService);
 
   readonly mapAsset = input('/maps/backlot.webp');
   readonly mapName = input('backlot');
@@ -29,12 +33,16 @@ export class MapWorkspace {
   protected readonly dragState = signal<DragState | null>(null);
   private readonly failedAsset = signal<string | null>(null);
 
+  private lastPointerDown: { x: number; y: number } | null = null;
+
   constructor() {
-    // Switching maps invalidates the previous view; start each map at default zoom.
+    // Switching maps invalidates the previous view; start each map at default
+    // zoom and drop stale editor markers (coordinates are map-relative).
     effect(() => {
-      if (this.mapAsset()) {
+      if (this.mapName()) {
         this.zoomLevel.set(1);
         this.panOffset.set({ x: 0, y: 0 });
+        this.editor.clearPoints();
       }
     });
   }
@@ -45,14 +53,16 @@ export class MapWorkspace {
     return `${label} tactical map`;
   });
 
-  /** Marker engine: lineups on the current map, narrowed by the selected filters. */
+  /** Marker engine: tactics from JSON, narrowed by the selected filters. */
   protected readonly markers = computed(() =>
-    this.lineupsService.filterLineups({
-      map: this.mapName(),
-      utility: this.utilityType(),
-      team: this.teamFilter(),
-      phase: this.phaseFilter(),
-    }),
+    this.tacticsService
+      .lineupsFor(this.mapName())()
+      .filter(
+        (lineup) =>
+          lineup.utility === this.utilityType() &&
+          lineup.phase === this.phaseFilter() &&
+          (this.teamFilter() === 'all' || lineup.team === this.teamFilter()),
+      ),
   );
 
   protected readonly isDragging = computed(() => this.dragState() !== null);
@@ -82,6 +92,8 @@ export class MapWorkspace {
   }
 
   protected onPointerDown(event: PointerEvent): void {
+    // Always remember the press so click-vs-pan detection works at any zoom.
+    this.lastPointerDown = { x: event.clientX, y: event.clientY };
     if (this.zoomLevel() <= 1 || event.button !== 0) return;
 
     const target = event.currentTarget;
@@ -121,6 +133,38 @@ export class MapWorkspace {
       target.releasePointerCapture(event.pointerId);
     }
     this.dragState.set(null);
+  }
+
+  /**
+   * Click (tiny or no movement) on the map frame during editing places
+   * a marker on the active target; anything that looks like a pan is ignored.
+   */
+  protected onMapFrameClick(event: MouseEvent): void {
+    const press = this.lastPointerDown;
+    this.lastPointerDown = null;
+    const moved = press !== null
+      && Math.hypot(press.x - event.clientX, press.y - event.clientY) > PLACEMENT_THRESHOLD_PX;
+    if (moved) return;
+    if (!this.editor.open()) return;
+
+    const frame = event.currentTarget;
+    if (!(frame instanceof HTMLElement)) return;
+
+    const rect = frame.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) return;
+
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
+    this.editor.placePoint({
+      x: Math.min(100, Math.max(0, x)),
+      y: Math.min(100, Math.max(0, y)),
+    });
+  }
+
+  protected onMarkerClick(event: MouseEvent, lineup: Lineup): void {
+    // Keep marker selection from also dropping an editor marker underneath.
+    event.stopPropagation();
+    this.lineupSelected.emit(lineup);
   }
 
   protected onAssetError(): void {

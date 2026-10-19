@@ -1,0 +1,24 @@
+{
+  "map": "crash",
+  "tactics": [
+    {
+      "id": "crash-frag-9svr",
+      "map": "crash",
+      "name": "crash early nade",
+      "utility": "frag",
+      "team": "marines",
+      "phase": "early",
+      "stance": "standing",
+      "description": "",
+      "videoUrl": null,
+      "start": {
+        "x": 60.41862309313634,
+        "y": 28.690081178655646
+      },
+      "landing": {
+        "x": 33.973997787933804,
+        "y": 36.43648657108871
+      }
+    }
+  ]
+}

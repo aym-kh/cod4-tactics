@@ -15,6 +15,8 @@ export type UtilityType = 'frag' | 'flash' | 'smoke';
 export type TeamSide = 'marines' | 'opfor';
 export type TeamFilter = TeamSide | 'all';
 export type MatchPhase = 'early' | 'mid' | 'late';
+export type StanceType = 'standing' | 'crouch' | 'walk' | 'jump';
+export type PlacingTarget = 'start' | 'landing';
 
 /** Position on the map, in percentage of the map frame (0-100). */
 export interface MapPoint {
@@ -22,6 +24,7 @@ export interface MapPoint {
     y: number;
 }
 
+/** A published tactic powering the map markers. Mirrors the JSON schema. */
 export interface Lineup {
     id: string;
     /** Map id, e.g. 'backlot'. */
@@ -30,13 +33,17 @@ export interface Lineup {
     utility: UtilityType;
     team: TeamSide;
     phase: MatchPhase;
+    stance: StanceType | null;
+    description: string;
+    videoUrl: string | null;
     /** Where the player stands / starts the throw. */
-    position: MapPoint;
+    start: MapPoint;
+    /** Nade landing point (optional). */
+    landing?: MapPoint | null;
 }
 
-export interface LineupFilter {
-    map: string;
-    utility: UtilityType;
-    team: TeamFilter;
-    phase: MatchPhase;
+/** A tactic being authored in the editor; coordinates may still be missing. */
+export interface TacticDraft extends Omit<Lineup, 'start'> {
+    start: MapPoint | null;
+    landing: MapPoint | null;
 }

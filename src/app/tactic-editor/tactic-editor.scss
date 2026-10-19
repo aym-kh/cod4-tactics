@@ -1,0 +1,124 @@
+.tactic-editor {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  width: min(360px, min(100vw, 88vw));
+  border-left: 1px solid #393a3c;
+  background: linear-gradient(155deg, #202122, #171819 78%);
+  box-shadow: -12px 0 36px #0009;
+  visibility: hidden;
+  transform: translateX(102%);
+  transition:
+    transform 200ms ease,
+    visibility 200ms ease;
+
+  &.is-open {
+    visibility: visible;
+    transform: translateX(0);
+  }
+}
+
+.lbl {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.035em;
+  color: #9d9fa1;
+}
+
+.field-input {
+  width: 100%;
+  border: 1px solid #3c3d3f;
+  border-radius: 6px;
+  background: #161718;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.85rem;
+  color: #ececec;
+
+  &::placeholder {
+    color: #6b6d6f;
+  }
+}
+
+.segmented {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 4px;
+}
+
+.segment {
+  border: 1px solid #414244;
+  border-radius: 7px;
+  background: #1c1d1e;
+  padding: 0.4rem 0.2rem;
+  font-size: 0.8rem;
+  color: #c5c7c8;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    color 120ms ease,
+    border-color 120ms ease;
+
+  &:hover {
+    background: #242527;
+    color: #efefef;
+  }
+
+  &.is-active {
+    background: #2e2f31;
+    border-color: #6e7074;
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.editor-mini-btn {
+  border: 1px solid #414244;
+  border-radius: 5px;
+  background: #1c1d1e;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.72rem;
+  color: #c5c7c8;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background: #242527;
+    color: #efefef;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.editor-preview {
+  border: 1px solid #3c3d3f;
+  border-radius: 7px;
+  background: #161718;
+  overflow: hidden;
+
+  summary {
+    cursor: pointer;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.78rem;
+    color: #b9bbbc;
+  }
+
+  pre {
+    margin: 0;
+    border-top: 1px solid #3c3d3f;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+}

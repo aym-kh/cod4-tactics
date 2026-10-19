@@ -2,12 +2,13 @@ import { Component, signal } from '@angular/core';
 import { DetailsPanel } from './details-panel/details-panel';
 import { MapWorkspace } from './map-workspace/map-workspace';
 import { NavigationPanel } from './navigation-panel/navigation-panel';
+import { TacticEditor } from './tactic-editor/tactic-editor';
 
 const DEFAULT_MAP = 'backlot';
 
 @Component({
   selector: 'app-root',
-  imports: [NavigationPanel, MapWorkspace, DetailsPanel],
+  imports: [NavigationPanel, MapWorkspace, DetailsPanel, TacticEditor],
   templateUrl: './app.html',
 })
 export class App {

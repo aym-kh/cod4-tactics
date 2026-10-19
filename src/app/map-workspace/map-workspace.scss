@@ -46,3 +46,17 @@
     scale: 1.25;
   }
 }
+
+.map-ghost {
+  pointer-events: none;
+
+  &.is-start {
+    background: #3ecf9e;
+    border-style: solid;
+  }
+
+  &.is-landing {
+    background: #e08b3e;
+    border-style: dashed;
+  }
+}
