@@ -52,3 +52,16 @@
     }
   }
 }
+
+.nav-social-link {
+  transition:
+    background-color 120ms ease,
+    color 120ms ease,
+    border-color 120ms ease;
+
+  &:hover {
+    background-color: #2a2b2d;
+    border-color: #6e7074;
+    color: #f4f4f4;
+  }
+}

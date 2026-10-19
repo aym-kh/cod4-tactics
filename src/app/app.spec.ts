@@ -2,6 +2,7 @@ import { provideRouter } from '@angular/router';
 import { TestBed } from '@angular/core/testing';
 import { App } from './app';
 import { TacticsService } from './tactics.service';
+import { version } from '../../package.json';
 
 const FIXTURE_TACTICS: Record<string, unknown> = {
   backlot: {
@@ -69,6 +70,16 @@ describe('App', () => {
     expect(element.querySelector('#navigation-panel')).toBeTruthy();
     expect(element.querySelector('.map-viewport')).toBeTruthy();
     expect(element.querySelector('#details-panel')).toBeTruthy();
+
+    // Sidebar extras: current version under the logo and social links pinned to the bottom.
+    const navPanel = element.querySelector('#navigation-panel') as HTMLElement;
+    expect(navPanel.querySelector('[aria-label="App version"]')?.textContent?.trim())
+      .toBe(`v${version}`);
+    const social = navPanel.querySelector('ul[aria-label="Social links"]');
+    expect(social).toBeTruthy();
+    expect(social?.querySelectorAll('a')).toHaveLength(3);
+    expect(social?.querySelector('a[aria-label="GitHub"]')?.getAttribute('href'))
+      .toBe('https://github.com/your-username/cod4-tactics');
   });
 
   it('should display the selected map in the map viewer', async () => {
