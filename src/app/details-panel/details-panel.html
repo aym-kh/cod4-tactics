@@ -1,5 +1,5 @@
 <aside
-  class="flex min-h-0 min-w-0 flex-col overflow-hidden border border-[#393a3c] bg-[linear-gradient(155deg,#202122,#171819_78%)] h-full"
+  class="flex flex-col overflow-hidden border border-[#393a3c] bg-[linear-gradient(155deg,#202122,#171819_78%)] h-full"
   id="details-panel" aria-labelledby="details-heading">
 
   <header class="flex min-h-11 items-center justify-between border-b border-[#393a3c] px-4">
@@ -7,18 +7,20 @@
     <div></div>
   </header>
 
-  <div class="flex flex-col gap-8 p-3">
+  <div class="flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto p-3">
 
+    @if (lineup(); as lineup) {
     <!-- ***************************************** -->
     <!-- ************ SELECTED PLAY ************** -->
     <!-- ***************************************** -->
-    <div class="flex min-h-14.25 items-center gap-2">
-      <!-- TODO: Change the below span with custom icons (nade, strafe, jump) -->
-      <span
-        class="grid size-11 shrink-0 place-items-center rounded-full border-2 border-[#a35c5c] bg-[radial-gradient(circle,#703c3c_0_32%,transparent_35%)]"></span>
-      <div>
-        <p class="text-[#c0c2c4]">SELECTED ACTION NAME</p>
-        <p class="text-[#66686a] text-xs">Action position</p>
+    <div class="flex items-center gap-2">
+      <span class="detail-chip size-11 shrink-0" [attr.data-utility]="lineup.utility" role="img"
+        [attr.aria-label]="utilityLabel(lineup) + ' icon'"></span>
+      <div class="min-w-0">
+        <p class="m-0 truncate font-semibold text-[#f0f0f1]">{{ lineup.name }}</p>
+        <p class="m-0 text-xs text-[#8b8d8f]">
+          {{ teamLabel(lineup) }} · {{ utilityLabel(lineup) }} · {{ stanceLabel(lineup) }}
+        </p>
       </div>
     </div>
 
@@ -35,35 +37,56 @@
     <!-- ***************************************** -->
     <section class="flex flex-col gap-2">
       <h3 class="m-0 text-[0.72rem] font-semibold uppercase tracking-[0.035em] text-[#dedede]">Alignment</h3>
-      <img src="https://placehold.co/600x400" alt="position preview">
+      <img src="https://placehold.co/600x400" alt="alignment preview">
     </section>
 
     <!-- ***************************************** -->
     <!-- ******** SELECTED PLAY META DATA ******** -->
     <!-- ***************************************** -->
-    <ul class="flex flex-col gap-2 border-t border-[#3c3d3f] text-[#dedede]" aria-hidden="true">
-      <li>
-        <span>Team: </span>
-        <span>....</span>
+    <ul class="grid gap-1.5 border-t border-[#3c3d3f] pt-3 text-sm text-[#dedede]" aria-label="Tactic details">
+      <li class="grid grid-cols-[90px_1fr] gap-2">
+        <span class="text-[#8b8d8f]">Map</span>
+        <span class="capitalize">{{ mapLabel(lineup) }}</span>
       </li>
-      <li>
-        <span>Stance: </span>
-        <span>....</span>
+      <li class="grid grid-cols-[90px_1fr] gap-2">
+        <span class="text-[#8b8d8f]">Team</span>
+        <span>{{ teamLabel(lineup) }}</span>
       </li>
-      <li>
-        <span>Description: </span>
-        <span>....</span>
+      <li class="grid grid-cols-[90px_1fr] gap-2">
+        <span class="text-[#8b8d8f]">Phase</span>
+        <span class="capitalize">{{ lineup.phase }}</span>
+      </li>
+      <li class="grid grid-cols-[90px_1fr] gap-2">
+        <span class="text-[#8b8d8f]">Stance</span>
+        <span>{{ stanceLabel(lineup) }}</span>
+      </li>
+      <li class="grid grid-cols-[90px_1fr] gap-2">
+        <span class="text-[#8b8d8f]">Throw</span>
+        <span class="wrap-break-word">{{ trajectoryLabel(lineup) }}</span>
       </li>
     </ul>
 
-    <button class="flex items-center justify-center gap-2
-    py-2 border border-[#4a4b4d] bg-[#333436] rounded-lg cursor-pointer" aria-hidden="true">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle-fill"
-        viewBox="0 0 16 16">
+    @if (lineup.description) {
+    <p class="m-0 border-t border-[#3c3d3f] pt-3 text-sm leading-relaxed text-[#c9cbcc]">{{ lineup.description }}</p>
+    }
+
+    @if (lineup.videoUrl) {
+    <a class="flex items-center justify-center gap-2 rounded-lg border border-[#4a4b4d] bg-[#333436] py-2 text-xs uppercase text-[#ececec] no-underline hover:bg-[#3b3c3e]"
+      [href]="lineup.videoUrl" target="_blank" rel="noopener noreferrer" aria-label="Play video clip">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"
+        aria-hidden="true">
         <path
           d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814z" />
       </svg>
-      <span class="text-xs uppercase">Play video clip</span>
-    </button>
+      <span>Play video clip</span>
+    </a>
+    }
+    } @else {
+    <div class="grid flex-1 place-items-center px-6 text-center" role="status">
+      <p class="m-0 text-sm text-[#8b8d8f]">
+        Pick a marker on the map to see the full lineup: team, stance, throw trajectory and clips.
+      </p>
+    </div>
+    }
   </div>
 </aside>
