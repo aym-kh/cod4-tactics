@@ -208,4 +208,36 @@ Tests run against stubbed tactic data; they don't touch the real JSON files.
 A maintainer or a reviewer will load your entry, sanity-check the position on
 the map, and merge.
 
+## Cutting a release (maintainers)
+
+Releases are automated through `scripts/release.mjs`:
+
+```bash
+# Preview the whole release pipeline without touching anything
+npm run release -- patch --dry-run
+
+# Do the real thing
+npm run release -- patch        # or minor / major
+```
+
+The script will:
+
+1. Verify the working tree is clean (abort otherwise)
+2. Run the test suite
+3. Bump `package.json` and `package-lock.json` to the next version
+4. Fold the `CHANGELOG.md` `[Unreleased]` section into a dated one
+   (`## [Unreleased]` becomes `## [x.y.z] - <date>`)
+5. Commit (`chore(release): x.y.z`), create the annotated `vx.y.z` tag and
+   push both with `git push --follow-tags`
+
+The `v*` tag push is what triggers the "Deploy to Netlify on Release Tag"
+workflow, which builds the production bundle and ships it to Netlify — so
+once the script finishes, watch the Actions run for the deploy result.
+
+Before releasing: make sure the version-relevant content actually lives
+under `CHANGELOG.md`'s `[Unreleased]` heading. Entries added under other
+sections are not folded.
+
+---
+
 Thanks for contributing to keeping COD4 competitive! 🎯

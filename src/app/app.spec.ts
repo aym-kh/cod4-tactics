@@ -79,7 +79,7 @@ describe('App', () => {
     expect(social).toBeTruthy();
     expect(social?.querySelectorAll('a')).toHaveLength(3);
     expect(social?.querySelector('a[aria-label="GitHub"]')?.getAttribute('href'))
-      .toBe('https://github.com/your-username/cod4-tactics');
+      .toBe('https://github.com/aym-kh/cod4-tactics');
   });
 
   it('should display the selected map in the map viewer', async () => {
