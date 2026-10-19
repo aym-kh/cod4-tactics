@@ -44,15 +44,15 @@ export interface LineupMarker {
 
 ### Phase 2: Interactive Map Engine
 
-[ ] Map Viewer Component (Panning, zooming, resetting view).
-[ ] Coordinate Mapping System: Translating (x, y) relative percentages into interactive SVG/HTML points over the map asset.
-[ ] Marker Tooltip & Selection State (Selecting a marker updates the detail sidebar/modal).
+[x] Map Viewer Component (Panning, zooming, resetting view).
+[x] Coordinate Mapping System: Translating (x, y) relative percentages into interactive SVG/HTML points over the map asset.
+[x] Marker Tooltip & Selection State (Selecting a marker updates the detail sidebar/modal).
 
 ### Phase 3: Content & MVP Asset Integration
 
-[ ] Load mp_backlot top-down high-res map asset.
-[ ] Add baseline JSON data for 5–10 classic Backlot lineups (A-site rush nade, B-building flash, middle street smoke).
-[ ] Implement filter controls (Filter by Frag/Flash/Smoke/Faction).
+[x] Load mp_backlot top-down high-res map asset.
+[x] Add baseline JSON data for 5–10 classic Backlot lineups (A-site rush nade, B-building flash, middle street smoke).
+[x] Implement filter controls (Filter by Frag/Flash/Smoke/Faction).
 
 ### Phase 4: Jump & Strafe Module
 
@@ -62,7 +62,7 @@ export interface LineupMarker {
 ### Phase 5: Polish & Deployment
 
 [ ] Keyboard shortcuts (e.g., Esc to clear selection, 1-3 to switch utility filters).
-[ ] Build optimization & deployment via GitHub Actions to GitHub Pages / Vercel.
+[x] Build optimization & deployment via GitHub Actions to Netlify.
 
 ## 🤖 Rules for AI Assistants
 

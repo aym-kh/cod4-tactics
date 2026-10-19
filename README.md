@@ -27,6 +27,8 @@ Unlike modern FPS titles, COD4 never had an interactive web-based utility app. *
 
 ## 🚀 Contributing
 
+**Want to submit a tactic?** See [CONTRIBUTING.md](./CONTRIBUTING.md) — the app has a built-in editor that exports submission-ready JSON; no manual coordinate editing required.
+
 ```bash
 # Clone the repository
 git clone [https://github.com/your-username/cod4-tactics.git](https://github.com/your-username/cod4-tactics.git)
