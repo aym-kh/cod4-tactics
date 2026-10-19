@@ -11,11 +11,20 @@ entries into a dated section automatically.
 
 ## [Unreleased]
 
+### Added
+
+- `netlify.toml` committed to the repo (build command, publish directory,
+  Node 24.21.0, SPA redirect) so deployment config lives in version control
+  instead of the Netlify UI
+
 ### Fixed
 
 - Deploy workflow now reads Node from `.nvmrc` (v24.21.0, matching local dev)
   instead of the outdated `node-version: 20`, which made the Angular CLI abort
   with "requires a minimum Node.js version"
+- Deploy step no longer triggers the Netlify CLI's implicit second build
+  (`netlify deploy` builds unless `--no-build` is passed), which failed with
+  `spawn bash ENOENT` while resolving the site's UI build settings
 - Added an `engines` field to `package.json` so unsupported Node versions are
   flagged at install time
 

@@ -26,9 +26,13 @@ jobs:
         run: npm run build
 
       - name: Deploy to Netlify
+        # --no-build: the CLI builds by default, which would run a SECOND
+        # build using the site's UI settings (it fails with `spawn bash
+        # ENOENT`). Steps above already produced dist/cod4-tactics/browser,
+        # so upload that directly.
         uses: netlify/actions/cli@master
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         with:
-          args: deploy --prod --dir=dist/cod4-tactics/browser
+          args: deploy --prod --no-build --dir=dist/cod4-tactics/browser

@@ -1,0 +1,20 @@
+# Netlify project configuration.
+# A config file here always wins over the site settings configured in the
+# Netlify UI, so the deployment behaves identically in CI and on Netlify's
+# own builds — no hidden UI state.
+
+[build]
+  command = "npm run build"
+  publish = "dist/cod4-tactics/browser"
+
+[build.environment]
+  # Must satisfy the Angular CLI's minimum versions (>= 24.15.0).
+  # Kept in sync with .nvmrc.
+  NODE_VERSION = "24.21.0"
+
+# Single-page app fallback: serve index.html for unknown routes so Angular
+# Router deep links work.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
