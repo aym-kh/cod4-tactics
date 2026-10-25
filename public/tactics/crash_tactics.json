@@ -19,6 +19,25 @@
         "x": 33.973997787933804,
         "y": 36.43648657108871
       }
+    },
+    {
+      "id": "crash-frag-w4jk",
+      "map": "crash",
+      "name": "Attack Nade 01",
+      "utility": "frag",
+      "team": "marines",
+      "phase": "early",
+      "stance": "standing",
+      "description": "Attack nade to stop A pushers",
+      "videoUrl": "https://youtu.be/4BZ1Iadip3k",
+      "start": {
+        "x": 14.547323536130358,
+        "y": 49.440341125409276
+      },
+      "landing": {
+        "x": 52.31477956293307,
+        "y": 27.023528515952183
+      }
     }
   ]
 }
