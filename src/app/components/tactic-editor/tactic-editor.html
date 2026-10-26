@@ -1,5 +1,4 @@
-<aside id="tactic-editor" class="tactic-editor" [class.is-open]="editor.open()"
-  aria-label="Add tactic editor">
+<aside id="tactic-editor" class="tactic-editor" [class.is-open]="editor.open()" aria-label="Add tactic editor">
 
   <header class="flex min-h-11 shrink-0 items-center justify-between border-b border-[#393a3c] px-4">
     <h2 class="m-0 text-[0.92rem] font-bold">Add tactic</h2>
@@ -23,8 +22,8 @@
       <span class="lbl">Utility</span>
       <div class="segmented" role="group" aria-label="Utility type">
         @for (option of utilityOptions; track option) {
-        <button class="segment capitalize" type="button"
-          [class.is-active]="editor.utilityType() === option" (click)="editor.utilityType.set(option)">
+        <button class="segment capitalize" type="button" [class.is-active]="editor.utilityType() === option"
+          (click)="editor.utilityType.set(option)">
           {{option}}
         </button>
         }
@@ -51,8 +50,8 @@
       <span class="lbl">Phase</span>
       <div class="segmented" role="group" aria-label="Phase">
         @for (option of phaseOptions; track option) {
-        <button class="segment capitalize" type="button"
-          [class.is-active]="editor.phase() === option" (click)="editor.phase.set(option)">
+        <button class="segment capitalize" type="button" [class.is-active]="editor.phase() === option"
+          (click)="editor.phase.set(option)">
           {{option}}
         </button>
         }
@@ -61,8 +60,8 @@
 
     <section class="flex flex-col gap-2">
       <label class="lbl" for="tactic-stance">Stance</label>
-      <select class="field-input" id="tactic-stance" aria-label="Stance"
-        [value]="editor.stance() ?? ''" (change)="editor.stance.set($any($event.target).value || null)">
+      <select class="field-input" id="tactic-stance" aria-label="Stance" [value]="editor.stance() ?? ''"
+        (change)="editor.stance.set($any($event.target).value || null)">
         @for (option of stanceOptions; track option.value) {
         <option [value]="option.value">{{option.label}}</option>
         }
@@ -73,14 +72,30 @@
       <label class="lbl" for="tactic-description">Description</label>
       <textarea class="field-input min-h-20 resize-y" id="tactic-description" rows="3"
         placeholder="Position details, timing, where to look…" aria-label="Tactic description"
-        [value]="editor.description()"
-        (input)="editor.description.set($any($event.target).value)"></textarea>
+        [value]="editor.description()" (input)="editor.description.set($any($event.target).value)"></textarea>
     </section>
 
     <section class="flex flex-col gap-2">
-      <label class="lbl" for="tactic-video">Video clip URL <em class="text-xs not-italic text-[#6b6d6f]">(optional)</em></label>
+      <label class="lbl" for="tactic-video">Video clip URL <em
+          class="text-xs not-italic text-[#6b6d6f]">(optional)</em></label>
       <input class="field-input" id="tactic-video" type="url" placeholder="https://…" aria-label="Video clip URL"
         [value]="editor.videoUrl()" (input)="editor.videoUrl.set($any($event.target).value)">
+    </section>
+
+    <section class="flex flex-col gap-2">
+      <label class="lbl" for="tactic-position-image">Position image URL <em
+          class="text-xs not-italic text-[#6b6d6f]">(optional)</em></label>
+      <input class="field-input" id="tactic-position-image" type="url" placeholder="https://…"
+        aria-label="Position image URL" [value]="editor.positionImage()"
+        (input)="editor.positionImage.set($any($event.target).value)">
+    </section>
+
+    <section class="flex flex-col gap-2">
+      <label class="lbl" for="tactic-alignment-image">Alignment image URL <em
+          class="text-xs not-italic text-[#6b6d6f]">(optional)</em></label>
+      <input class="field-input" id="tactic-alignment-image" type="url" placeholder="https://…"
+        aria-label="Alignment image URL" [value]="editor.alignmentImage()"
+        (input)="editor.alignmentImage.set($any($event.target).value)">
     </section>
 
     <!-- ***************************************** -->
@@ -90,8 +105,7 @@
       <span class="lbl">Markers</span>
       <div class="segmented" role="group" aria-label="Placing target">
         @for (option of placingOptions; track option.key) {
-        <button class="segment" type="button"
-          [class.is-active]="editor.placingTarget() === option.key"
+        <button class="segment" type="button" [class.is-active]="editor.placingTarget() === option.key"
           (click)="editor.placingTarget.set(option.key)" [disabled]="!editor.open()">
           {{option.label}}
         </button>
@@ -103,16 +117,17 @@
             <span class="size-2.5 rounded-full border border-[#ecfffa] bg-[#3ecf9e]" aria-hidden="true"></span>
             {{pointLabel(editor.start())}}
           </span>
-          <button class="editor-mini-btn" type="button" [disabled]="!editor.start()"
-            aria-label="Clear start marker" (click)="editor.start.set(null)">Clear</button>
+          <button class="editor-mini-btn" type="button" [disabled]="!editor.start()" aria-label="Clear start marker"
+            (click)="editor.start.set(null)">Clear</button>
         </li>
         <li class="flex items-center justify-between gap-2">
           <span class="flex items-center gap-2">
-            <span class="size-2.5 rounded-full border border-dashed border-[#fff3e6] bg-[#e08b3e]" aria-hidden="true"></span>
+            <span class="size-2.5 rounded-full border border-dashed border-[#fff3e6] bg-[#e08b3e]"
+              aria-hidden="true"></span>
             {{pointLabel(editor.landing())}}
           </span>
-          <button class="editor-mini-btn" type="button" [disabled]="!editor.landing()"
-            aria-label="Clear landing marker" (click)="editor.landing.set(null)">Clear</button>
+          <button class="editor-mini-btn" type="button" [disabled]="!editor.landing()" aria-label="Clear landing marker"
+            (click)="editor.landing.set(null)">Clear</button>
         </li>
       </ul>
     </section>

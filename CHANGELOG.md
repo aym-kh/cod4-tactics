@@ -11,6 +11,11 @@ entries into a dated section automatically.
 
 ## [Unreleased]
 
+### Added
+
+- Optional `positionImage` and `alignmentImage` URL fields for tactics,
+  editable in the tactic editor and displayed in the lineup breakdown
+
 ## [0.1.1] - 2026-10-19
 
 ### Added
@@ -89,7 +94,5 @@ entries into a dated section automatically.
 
 ### Known issues / TODO
 
-- Position and alignment previews in the breakdown panel are placeholder
-  images; auto-cropped map snapshots are planned
 - Real lineup data is still sparse — tactics files contain little content and
   need community contribution

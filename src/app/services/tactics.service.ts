@@ -73,6 +73,8 @@ export class TacticsService {
             : null,
           description: typeof e['description'] === 'string' ? e['description'] : '',
           videoUrl: typeof e['videoUrl'] === 'string' ? e['videoUrl'] : null,
+          positionImage: typeof e['positionImage'] === 'string' ? e['positionImage'].trim() || null : null,
+          alignmentImage: typeof e['alignmentImage'] === 'string' ? e['alignmentImage'].trim() || null : null,
           start,
           landing: toPoint(e['landing']),
         },

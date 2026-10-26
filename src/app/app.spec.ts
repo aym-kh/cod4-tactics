@@ -17,8 +17,21 @@ const FIXTURE_TACTICS: Record<string, unknown> = {
         stance: 'standing',
         description: 'Throw from the junction at short A.',
         videoUrl: null,
+        positionImage: '/tactics/images/backlot-position.jpg',
+        alignmentImage: '/tactics/images/backlot-alignment.jpg',
         start: { x: 45.2, y: 62.8 },
         landing: { x: 26.5, y: 38.4 },
+      },
+      {
+        id: 'backlot-f-02',
+        name: 'B-site frag from mid',
+        utility: 'frag',
+        team: 'marines',
+        phase: 'early',
+        stance: 'standing',
+        description: '',
+        videoUrl: null,
+        start: { x: 31.4, y: 38 },
       },
     ],
   },
@@ -115,6 +128,17 @@ describe('App', () => {
     expect(details().textContent).toContain('Throw');
     expect(details().textContent).toContain('45.2%, 62.8% → 26.5%, 38.4%');
     expect(details().querySelector('.detail-chip')?.getAttribute('data-utility')).toBe('frag');
+    expect(details().querySelector<HTMLImageElement>('img[alt="Position reference"]')?.getAttribute('src'))
+      .toBe('/tactics/images/backlot-position.jpg');
+    expect(details().querySelector<HTMLImageElement>('img[alt="Alignment reference"]')?.getAttribute('src'))
+      .toBe('/tactics/images/backlot-alignment.jpg');
+
+    // A lineup without a landing point should omit the alignment preview.
+    element.querySelector<HTMLButtonElement>('.map-marker[aria-label="B-site frag from mid"]')?.click();
+    fixture.detectChanges();
+    expect(details().textContent).toContain('B-site frag from mid');
+    expect(details().querySelector('img[alt="Position reference"]')).toBeNull();
+    expect(details().querySelector('img[alt="Alignment reference"]')).toBeNull();
 
     // Navigating to another map clears the stale selection.
     const crashButton = [...element.querySelectorAll<HTMLButtonElement>('#navigation-panel button')]

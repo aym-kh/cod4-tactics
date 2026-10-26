@@ -17,6 +17,8 @@ export class TacticEditorService {
   readonly stance = signal<StanceType | null>('standing');
   readonly description = signal('');
   readonly videoUrl = signal('');
+  readonly positionImage = signal('');
+  readonly alignmentImage = signal('');
 
   readonly start = signal<MapPoint | null>(null);
   readonly landing = signal<MapPoint | null>(null);
@@ -64,6 +66,8 @@ export class TacticEditorService {
     this.stance.set('standing');
     this.description.set('');
     this.videoUrl.set('');
+    this.positionImage.set('');
+    this.alignmentImage.set('');
   }
 
   buildTactic(map: string): TacticDraft {
@@ -77,6 +81,8 @@ export class TacticEditorService {
       stance: this.stance(),
       description: this.description().trim(),
       videoUrl: this.videoUrl().trim() || null,
+      positionImage: this.positionImage().trim() || null,
+      alignmentImage: this.alignmentImage().trim() || null,
       start: this.start(),
       landing: this.landing(),
     };

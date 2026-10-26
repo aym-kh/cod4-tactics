@@ -27,18 +27,22 @@
     <!-- ***************************************** -->
     <!-- ******** PLAY POSITION ****************** -->
     <!-- ***************************************** -->
+    @if (lineup.positionImage) {
     <section class="flex flex-col gap-2">
       <h3 class="m-0 text-[0.72rem] font-semibold uppercase tracking-[0.035em] text-[#dedede]">Position</h3>
-      <img src="https://placehold.co/600x400" alt="position preview">
+      <img class="w-full rounded-md" [src]="lineup.positionImage" alt="Position reference">
     </section>
+    }
 
     <!-- ***************************************** -->
     <!-- ******** PLAY ALIGNMENT ***************** -->
     <!-- ***************************************** -->
+    @if (lineup.alignmentImage) {
     <section class="flex flex-col gap-2">
       <h3 class="m-0 text-[0.72rem] font-semibold uppercase tracking-[0.035em] text-[#dedede]">Alignment</h3>
-      <img src="https://placehold.co/600x400" alt="alignment preview">
+      <img class="w-full rounded-md" [src]="lineup.alignmentImage" alt="Alignment reference">
     </section>
+    }
 
     <!-- ***************************************** -->
     <!-- ******** SELECTED PLAY META DATA ******** -->

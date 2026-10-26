@@ -61,6 +61,8 @@ describe('TacticEditor', () => {
     expect(preview?.textContent).toContain('"stance": "standing"');
     expect(preview?.textContent).toContain('"start": null');
     expect(preview?.textContent).toContain('"landing": null');
+    expect(preview?.textContent).toContain('"positionImage": null');
+    expect(preview?.textContent).toContain('"alignmentImage": null');
 
     const copy = element.querySelector<HTMLButtonElement>('[aria-label="Copy tactic JSON"]');
     const download = element.querySelector<HTMLButtonElement>('[aria-label="Download tactic JSON"]');
@@ -77,6 +79,12 @@ describe('TacticEditor', () => {
     const nameInput = element.querySelector<HTMLInputElement>('#tactic-name')!;
     nameInput.value = 'A-site frag from double';
     nameInput.dispatchEvent(new Event('input', { bubbles: true }));
+    const positionImageInput = element.querySelector<HTMLInputElement>('#tactic-position-image')!;
+    positionImageInput.value = '/tactics/images/position.jpg';
+    positionImageInput.dispatchEvent(new Event('input', { bubbles: true }));
+    const alignmentImageInput = element.querySelector<HTMLInputElement>('#tactic-alignment-image')!;
+    alignmentImageInput.value = '/tactics/images/alignment.jpg';
+    alignmentImageInput.dispatchEvent(new Event('input', { bubbles: true }));
 
     editor.setPoint('start', { x: 45.2, y: 62.8 });
     fixture.detectChanges();
@@ -85,6 +93,8 @@ describe('TacticEditor', () => {
     const preview = element.querySelector<HTMLPreElement>('.editor-preview pre');
     expect(preview?.textContent).toContain('"name": "A-site frag from double"');
     expect(preview?.textContent).toContain('"start": {\n    "x": 45.2');
+    expect(preview?.textContent).toContain('"positionImage": "/tactics/images/position.jpg"');
+    expect(preview?.textContent).toContain('"alignmentImage": "/tactics/images/alignment.jpg"');
     expect(preview?.textContent).toContain('"id": "backlot-frag-');
 
     const copy = element.querySelector<HTMLButtonElement>('[aria-label="Copy tactic JSON"]')!;

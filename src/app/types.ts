@@ -43,6 +43,9 @@ export interface Lineup {
     stance: StanceType | null;
     description: string;
     videoUrl: string | null;
+    /** Optional screenshots documenting the throw position and alignment. */
+    positionImage?: string | null;
+    alignmentImage?: string | null;
     /** Where the player stands / starts the throw. */
     start: MapPoint;
     /** Nade landing point (optional). */
