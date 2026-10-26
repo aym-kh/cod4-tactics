@@ -21,35 +21,43 @@
 }
 
 .map-marker {
-  border-color: #f4f4f4;
+  border-color: #dddfe0;
+  background: #9fa0a1;
+  box-shadow: 0 0 6px #ffffff;
   outline-offset: 2px;
   cursor: pointer;
-
-  &[data-utility='frag'] {
-    background: #c65b54;
-    box-shadow: 0 0 12px #c65b54;
-  }
-
-  &[data-utility='flash'] {
-    background: #e3b341;
-    border-color: #f7f1e3;
-    box-shadow: 0 0 12px #e3b341;
-  }
-
-  &[data-utility='smoke'] {
-    background: #8fa3ad;
-    border-color: #eef2f4;
-    box-shadow: 0 0 12px #8fa3ad;
-  }
+  transition: background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease, scale 120ms ease;
 
   // Landing points render as hollow dashed rings in the same utility hue.
   &.is-landing {
-    background: #e2970b;
+    background: transparent;
     border-style: dashed;
   }
 
-  &:hover {
+  &.is-active {
     scale: 1.25;
+
+    &[data-utility='frag'] {
+      background: #c65b54;
+      border-color: #f4f4f4;
+      box-shadow: 0 0 12px #c65b54;
+    }
+
+    &[data-utility='flash'] {
+      background: #e3b341;
+      border-color: #f7f1e3;
+      box-shadow: 0 0 12px #e3b341;
+    }
+
+    &[data-utility='smoke'] {
+      background: #8fa3ad;
+      border-color: #eef2f4;
+      box-shadow: 0 0 12px #8fa3ad;
+    }
+
+    &.is-landing {
+      background: transparent;
+    }
   }
 }
 
@@ -61,17 +69,22 @@
     stroke-width: 0.4;
     stroke-dasharray: 1.8 1.5;
     stroke-linecap: round;
+    transition: stroke 120ms ease, stroke-width 120ms ease;
 
-    &[data-utility='frag'] {
-      stroke: #c65b54;
-    }
+    &.is-active {
+      stroke-width: 0.7;
 
-    &[data-utility='flash'] {
-      stroke: #e3b341;
-    }
+      &[data-utility='frag'] {
+        stroke: #c65b54;
+      }
 
-    &[data-utility='smoke'] {
-      stroke: #8fa3ad;
+      &[data-utility='flash'] {
+        stroke: #e3b341;
+      }
+
+      &[data-utility='smoke'] {
+        stroke: #8fa3ad;
+      }
     }
   }
 

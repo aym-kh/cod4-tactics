@@ -31,6 +31,7 @@ export class MapWorkspace {
   protected readonly zoomLevel = signal(1);
   protected readonly panOffset = signal<PanOffset>({ x: 0, y: 0 });
   protected readonly dragState = signal<DragState | null>(null);
+  protected readonly activeLineupId = signal<string | null>(null);
   private readonly failedAsset = signal<string | null>(null);
 
   private lastPointerDown: { x: number; y: number } | null = null;
@@ -182,6 +183,16 @@ export class MapWorkspace {
     // Keep marker selection from also dropping an editor marker underneath.
     event.stopPropagation();
     this.lineupSelected.emit(lineup);
+  }
+
+  protected activateLineup(id: string): void {
+    this.activeLineupId.set(id);
+  }
+
+  protected deactivateLineup(id: string): void {
+    if (this.activeLineupId() === id) {
+      this.activeLineupId.set(null);
+    }
   }
 
   protected onAssetError(): void {

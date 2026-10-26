@@ -149,6 +149,31 @@ describe('MapWorkspace', () => {
     // One dashed trajectory per tactic with a landing point.
     expect(element.querySelectorAll('.map-trajectories line')).toHaveLength(2);
 
+    const firstStart = element.querySelector<HTMLButtonElement>(
+      '.map-marker[aria-label="A-site frag from short"]',
+    )!;
+    const firstLanding = element.querySelector<HTMLButtonElement>(
+      '.map-marker[aria-label="A-site frag from short landing point"]',
+    )!;
+    const firstTrajectory = element.querySelector<SVGLineElement>(
+      '.map-trajectories line[data-utility="frag"]',
+    )!;
+    expect(firstStart.classList.contains('is-active')).toBe(false);
+    expect(firstLanding.classList.contains('is-active')).toBe(false);
+    expect(firstTrajectory.classList.contains('is-active')).toBe(false);
+
+    firstStart.dispatchEvent(new MouseEvent('mouseenter'));
+    fixture.detectChanges();
+    expect(firstStart.classList.contains('is-active')).toBe(true);
+    expect(firstLanding.classList.contains('is-active')).toBe(true);
+    expect(firstTrajectory.classList.contains('is-active')).toBe(true);
+
+    firstStart.dispatchEvent(new MouseEvent('mouseleave'));
+    fixture.detectChanges();
+    expect(firstStart.classList.contains('is-active')).toBe(false);
+    expect(firstLanding.classList.contains('is-active')).toBe(false);
+    expect(firstTrajectory.classList.contains('is-active')).toBe(false);
+
     fixture.componentRef.setInput('mapAsset', '/maps/crash.webp');
     fixture.componentRef.setInput('mapName', 'crash');
     await tactics.tacticsReady('crash');
