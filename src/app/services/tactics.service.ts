@@ -2,7 +2,7 @@ import { Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { Lineup, MapPoint, MatchPhase, StanceType, TeamSide, UtilityType } from '../types';
 
 const UTILITY_TYPES = new Set<string>(['frag', 'flash', 'smoke']);
-const TEAM_SIDES = new Set<string>(['marines', 'opfor']);
+const TEAM_SIDES = new Set<string>(['attack', 'defence']);
 const MATCH_PHASES = new Set<string>(['early', 'mid', 'late']);
 const STANCES = new Set<string>(['standing', 'crouch', 'walk', 'jump']);
 

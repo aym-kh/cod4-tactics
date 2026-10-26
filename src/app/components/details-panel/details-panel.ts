@@ -12,7 +12,7 @@ export class DetailsPanel {
   readonly lineup = input<Lineup | null>(null);
 
   protected teamLabel(lineup: Lineup): string {
-    return lineup.team === 'opfor' ? 'OpFor' : 'Marines';
+    return lineup.team.charAt(0).toUpperCase() + lineup.team.slice(1);
   }
 
   protected stanceLabel(lineup: Lineup): string {

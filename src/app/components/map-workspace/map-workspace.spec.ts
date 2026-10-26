@@ -12,7 +12,7 @@ const FIXTURE_TACTICS: Record<string, unknown> = {
         id: 'backlot-f-01',
         name: 'A-site frag from short',
         utility: 'frag',
-        team: 'marines',
+        team: 'attack',
         phase: 'mid',
         stance: 'standing',
         description: '',
@@ -24,7 +24,7 @@ const FIXTURE_TACTICS: Record<string, unknown> = {
         id: 'backlot-l-01',
         name: 'B-bomb flash over pillar',
         utility: 'flash',
-        team: 'opfor',
+        team: 'defence',
         phase: 'early',
         stance: 'crouch',
         description: '',
@@ -36,7 +36,7 @@ const FIXTURE_TACTICS: Record<string, unknown> = {
         id: 'backlot-s-01',
         name: 'River-road smoke for A cross',
         utility: 'smoke',
-        team: 'marines',
+        team: 'attack',
         phase: 'late',
         stance: 'standing',
         description: '',
@@ -53,7 +53,7 @@ const FIXTURE_TACTICS: Record<string, unknown> = {
         id: 'crash-f-01',
         name: 'Sniper-spot frag from rubble',
         utility: 'frag',
-        team: 'marines',
+        team: 'attack',
         phase: 'mid',
         stance: 'walk',
         description: '',
@@ -197,7 +197,7 @@ describe('MapWorkspace', () => {
     expect(element.querySelectorAll('.map-marker')).toHaveLength(5);
     expect(status()).toBeNull();
 
-    // Narowing to frag / marines / mid leaves only the A-site frag (with its landing).
+    // Narrowing to frag / attack / mid leaves only the A-site frag (with its landing).
     element.querySelectorAll<HTMLInputElement>('input[name="utility-type"]')[1]?.click();
     element.querySelectorAll<HTMLInputElement>('input[name="team"]')[1]?.click();
     element.querySelectorAll<HTMLInputElement>('input[name="phase"]')[2]?.click();

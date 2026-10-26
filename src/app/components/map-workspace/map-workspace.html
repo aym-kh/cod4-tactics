@@ -25,11 +25,7 @@
         <label class="inline-flex min-h-8 items-center gap-1.5 whitespace-nowrap text-[0.83rem] text-[#dfe0e0]">
           <input class="size-4 accent-[#b8b8b8]" type="radio" name="team" [value]="option"
             [checked]="teamFilter() === option" (change)="teamFilter.set(option)">
-          @if (option === 'opfor') {
-          <span>OpFor</span>
-          } @else {
           <span class="capitalize">{{option}}</span>
-          }
         </label>
         }
       </div>

@@ -21,7 +21,7 @@ export class MapWorkspace {
   readonly lineupSelected = output<Lineup>();
 
   protected readonly utilityOptions: UtilityFilter[] = ['all', 'frag', 'flash', 'smoke'];
-  protected readonly teamOptions: TeamFilter[] = ['all', 'marines', 'opfor'];
+  protected readonly teamOptions: TeamFilter[] = ['all', 'attack', 'defence'];
   protected readonly phaseOptions: PhaseFilter[] = ['all', 'early', 'mid', 'late'];
 
   readonly utilityType = signal<UtilityFilter>('all');

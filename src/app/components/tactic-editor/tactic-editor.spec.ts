@@ -58,6 +58,7 @@ describe('TacticEditor', () => {
 
     const preview = element.querySelector<HTMLPreElement>('.editor-preview pre');
     expect(preview?.textContent).toContain('"utility": "frag"');
+    expect(preview?.textContent).toContain('"team": "attack"');
     expect(preview?.textContent).toContain('"stance": "standing"');
     expect(preview?.textContent).toContain('"start": null');
     expect(preview?.textContent).toContain('"landing": null');

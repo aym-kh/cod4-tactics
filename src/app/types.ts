@@ -12,7 +12,7 @@ export interface DragState {
 }
 
 export type UtilityType = 'frag' | 'flash' | 'smoke';
-export type TeamSide = 'marines' | 'opfor';
+export type TeamSide = 'attack' | 'defence';
 export type MatchPhase = 'early' | 'mid' | 'late';
 export type StanceType = 'standing' | 'crouch' | 'walk' | 'jump';
 export type PlacingTarget = 'start' | 'landing';

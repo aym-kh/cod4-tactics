@@ -12,7 +12,7 @@ export class TacticEditorService {
 
   readonly name = signal('');
   readonly utilityType = signal<UtilityType>('frag');
-  readonly teamSide = signal<TeamSide>('marines');
+  readonly teamSide = signal<TeamSide>('attack');
   readonly phase = signal<MatchPhase>('mid');
   readonly stance = signal<StanceType | null>('standing');
   readonly description = signal('');
@@ -61,7 +61,7 @@ export class TacticEditorService {
     this.clearPoints();
     this.name.set('');
     this.utilityType.set('frag');
-    this.teamSide.set('marines');
+    this.teamSide.set('attack');
     this.phase.set('mid');
     this.stance.set('standing');
     this.description.set('');

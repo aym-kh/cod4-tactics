@@ -36,11 +36,7 @@
         @for (option of teamOptions; track option) {
         <button class="segment" type="button" [class.is-active]="editor.teamSide() === option"
           (click)="editor.teamSide.set(option)">
-          @if (option === 'opfor') {
-          <span>OpFor</span>
-          } @else {
           <span class="capitalize">{{option}}</span>
-          }
         </button>
         }
       </div>

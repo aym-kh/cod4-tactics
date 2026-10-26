@@ -18,7 +18,7 @@ export class TacticEditor {
 
   protected readonly editor = this.editorService;
   protected readonly utilityOptions: UtilityType[] = ['frag', 'flash', 'smoke'];
-  protected readonly teamOptions: TeamSide[] = ['marines', 'opfor'];
+  protected readonly teamOptions: TeamSide[] = ['attack', 'defence'];
   protected readonly phaseOptions: MatchPhase[] = ['early', 'mid', 'late'];
   protected readonly stanceOptions: Array<{ label: string; value: StanceType | '' }> = [
     { label: 'Standing', value: 'standing' },
