@@ -37,7 +37,7 @@ on the right with the submission form.
 | --- | --- |
 | Tactic name | A short, descriptive title (see [naming guidelines](#quality-guidelines)) |
 | Utility | Frag, Flash or Smoke |
-| Team | Marines or OpFor |
+| Team | Attack or Defence |
 | Phase | Early, Mid or Late — roughly when in the round you throw this |
 | Stance | Standing, Crouch, Walk or Jump (set to None if it doesn't matter) |
 | Description | Optional: timing cues, where to look, common mistakes |
@@ -101,7 +101,7 @@ Each file holds a single `tactics` array:
       "map": "crash",
       "name": "crash early nade",
       "utility": "frag",
-      "team": "marines",
+      "team": "attack",
       "phase": "early",
       "stance": "standing",
       "description": "",
@@ -128,7 +128,7 @@ everything else untouched.
 | `map` | string | yes | One of `backlot`, `bog`, `crash`, `crossfire`, `district`, `strike` — must match the file |
 | `name` | string | yes | Free text, shown on the map and in the breakdown panel |
 | `utility` | string | yes | `frag`, `flash` or `smoke` |
-| `team` | string | yes | `marines` or `opfor` |
+| `team` | string | yes | `attack` or `defence` |
 | `phase` | string | yes | `early`, `mid` or `late` |
 | `stance` | string \| null | yes | `standing`, `crouch`, `walk`, `jump` or `null` |
 | `description` | string | yes | Free text (can be empty `""`) |

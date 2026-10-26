@@ -11,6 +11,17 @@ entries into a dated section automatically.
 
 ## [Unreleased]
 
+### Changed
+
+- Replaced Marines / OpFor team values with Attack / Defence throughout the
+  editor, filters, lineup details and tactic JSON
+- Made the markers grayed out by default until the user hovers on them
+
+### Added
+
+- Crash Nade 002
+
+
 ## [0.1.2] - 2026-10-26
 
 ### Added

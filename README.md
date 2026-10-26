@@ -11,7 +11,7 @@ An interactive, high-performance web tool built with Angular for **Call of Duty 
 
 Unlike modern FPS titles, COD4 never had an interactive web-based utility app. **COD4 Tactics** solves this by delivering an interactive canvas overlay where players can:
 - Explore high-resolution top-down map layouts (*Crash, Backlot, Crossfire, District, Strike*).
-- Filter lineups by **Utility Type** (Frag, Flash, Smoke), **Faction** (Marines / OpFor), or **Difficulty**.
+- Filter lineups by **Utility Type** (Frag, Flash, Smoke), **Team** (Attack / Defence), or **Difficulty**.
 - View crosshair alignments, standing/crouch instructions, and trajectory outcomes.
 - Learn classic COD4 strafe jumps and bounce spots with visual guides.
 
