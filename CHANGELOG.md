@@ -11,6 +11,8 @@ entries into a dated section automatically.
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-10-26
+
 ### Added
 
 - Optional `positionImage` and `alignmentImage` URL fields for tactics,
