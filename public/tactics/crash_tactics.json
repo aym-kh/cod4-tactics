@@ -38,6 +38,27 @@
         "x": 52.31477956293307,
         "y": 27.023528515952183
       }
+    },
+    {
+      "id": "crash-frag-ec9m",
+      "map": "crash",
+      "name": "Attack Nade 02",
+      "utility": "frag",
+      "team": "marines",
+      "phase": "early",
+      "stance": "standing",
+      "description": "Earlyy nade to kill A rushers",
+      "videoUrl": "https://youtu.be/Y2PtLLW2IYQ",
+      "positionImage": null,
+      "alignmentImage": null,
+      "start": {
+        "x": 30.385288966725042,
+        "y": 58.45579837051702
+      },
+      "landing": {
+        "x": 66.2034569405315,
+        "y": 33.96786720475139
+      }
     }
   ]
 }
