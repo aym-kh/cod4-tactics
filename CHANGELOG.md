@@ -11,6 +11,8 @@ entries into a dated section automatically.
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-10-26
+
 ### Changed
 
 - Replaced Marines / OpFor team values with Attack / Defence throughout the
