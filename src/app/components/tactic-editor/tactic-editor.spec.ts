@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { TacticEditor } from './tactic-editor';
-import { TacticEditorService } from '../tactic-editor.service';
+import { TacticEditorService } from '../../services/tactic-editor.service';
 
 function stubClipboard(): { writeText: ReturnType<typeof vi.fn> } {
   const writeText = vi.fn().mockResolvedValue(undefined);

@@ -1,7 +1,7 @@
 import { provideRouter } from '@angular/router';
 import { TestBed } from '@angular/core/testing';
 import { App } from './app';
-import { TacticsService } from './tactics.service';
+import { TacticsService } from './services/tactics.service';
 import { version } from '../../package.json';
 
 const FIXTURE_TACTICS: Record<string, unknown> = {

@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { MapWorkspace } from './map-workspace';
-import { TacticEditorService } from '../tactic-editor.service';
-import { TacticsService } from '../tactics.service';
+import { TacticEditorService } from '../../services/tactic-editor.service';
+import { TacticsService } from '../../services/tactics.service';
 
 /** Minimal per-map tactic file fixtures, matching public/tactics/*.json. */
 const FIXTURE_TACTICS: Record<string, unknown> = {
